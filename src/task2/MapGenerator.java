@@ -58,7 +58,6 @@ public class MapGenerator {
             for (int j = 0; j < dimension; j++) {
                 Tile tile1 = new Tile(i, j, typeSet(counter));
                 arrayTiles[counter] = tile1;
-                System.out.println(i + ", " + j + ", " + counter);
                 counter++;
             }
         }
