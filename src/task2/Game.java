@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.Random;
 
 public class Game {
-    
+
     Scanner sc = new Scanner(System.in);
     int turn;
     int playersNum;
@@ -30,8 +30,10 @@ public class Game {
         startQuestions();
         MapGenerator mg = new MapGenerator(mapSide);
         arrayTiles = mg.returnArray();
+        startPositions();
+        //outputStartPos();
     }
-    
+
     void startQuestions() {
         while (playersNum > 8 || playersNum < 2) {
             System.out.println("How many players will be playing? (2 to 8 players)\n");
@@ -52,11 +54,34 @@ public class Game {
             }
         }
     }
-    
+
     void startPositions() {
+        boolean done;
         playersStartPosition = new int[playersNum][2];
-        while(true){
-            
+        int counter = 0;
+        while (counter < playersNum) {
+            done = false;
+            while (!done) {
+                double a = ((mapSide * mapSide * rand.nextDouble()));
+                int f = (int) Math.round(a);
+                if (f < 0) {
+                    f = 0;
+                } else if (f > 24) {
+                    f = 24;
+                }
+                if (arrayTiles[f].tileType == 0) {
+                    playersStartPosition[counter][0] = arrayTiles[f].tileX;
+                    playersStartPosition[counter][1] = arrayTiles[f].tileY;
+                    done = true;
+                }
+            }
+            counter++;
+        }
+    }
+    
+    void outputStartPos() {
+        for(int i = 0; i<playersNum; i++){
+            System.out.println(playersStartPosition[i][0]+", "+playersStartPosition[i][1]);
         }
     }
 }
