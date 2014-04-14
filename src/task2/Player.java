@@ -2,16 +2,17 @@ package task2;
 
 public class Player {
 
-    private final int startposX;
-    private final int startposY;
-    private int currentposX;
-    private int currentposY;
+    int startposX;
+    int startposY;
+    int currentposX;
+    int currentposY;
 
     public Player(int a, int b) {
         startposX = a;
         startposY = b;
-        currentposX = startposX;
-        currentposY = startposY;
+    }
+    
+    public Player() {
     }
 
     void moveUp() {
@@ -33,5 +34,15 @@ public class Player {
     int[] returnPos() {
         int[] arrayX = {currentposX, currentposY};
         return arrayX;
+    }
+    
+    void setX(int a) {
+        startposX = a;
+        currentposX = startposX;
+    }
+    
+    void setY(int b) {
+        startposX = b;
+        currentposY = startposY;
     }
 }

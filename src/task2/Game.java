@@ -10,6 +10,7 @@ public class Game {
     int playersNum;
     int mapSide;
     Tile[] arrayTiles;
+    Player[] arrayPlayers;
     int[][] playersStartPosition;
     Random rand = new Random();
 
@@ -31,7 +32,8 @@ public class Game {
         MapGenerator mg = new MapGenerator(mapSide);
         arrayTiles = mg.returnArray();
         startPositions();
-        //outputStartPos();
+        outputStartPos();
+        copyStartPos();
     }
 
     void startQuestions() {
@@ -62,6 +64,7 @@ public class Game {
         while (counter < playersNum) {
             done = false;
             while (!done) {
+                
                 double a = ((mapSide * mapSide * rand.nextDouble()));
                 int f = (int) Math.round(a);
                 if (f < 0) {
@@ -82,6 +85,14 @@ public class Game {
     void outputStartPos() {
         for(int i = 0; i<playersNum; i++){
             System.out.println(playersStartPosition[i][0]+", "+playersStartPosition[i][1]);
+        }
+    }
+    
+    void copyStartPos() {
+        arrayPlayers = new Player[playersNum];
+        for(int i = 0; i<playersNum; i++) {
+        Player temp = new Player(playersStartPosition[i][0],playersStartPosition[i][1]);
+        arrayPlayers[i] = temp;
         }
     }
 }
