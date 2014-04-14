@@ -1,6 +1,5 @@
 package task2;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class MapGenerator {
@@ -21,14 +20,17 @@ public class MapGenerator {
         waterTilesMax = a - 1;
         mapSize = dimension * dimension;
         arrayTiles = new Tile[mapSize];
+        start();
     }
 
-    void start() {
+    private void start() {
         genLoop();
-        System.out.println();
-        retrieveLoop();
-        System.out.println();
+        //retrieveLoop();
         displayLoop();
+    }
+    
+    Tile[] returnArray() {
+        return arrayTiles;
     }
 
     int typeSet(int currTile) { //Type 0 = grass, Type 1 = water, Type 2 = win
@@ -62,7 +64,7 @@ public class MapGenerator {
             }
         }
     }
-
+    /*
     void retrieveLoop() {
         for (int i = 0; i < mapSize; i++) {
             int tempX = arrayTiles[i].tileX;
@@ -71,13 +73,14 @@ public class MapGenerator {
             System.out.println("For tile number " + i + ": X = " + tempX + ", Y = " + tempY + ", Type = " + tempType);
         }
     }
-    
+    */
     void displayLoop() {
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
-                System.out.print(arrayTiles[5*i+j].tileType+"\t");
+                System.out.print(arrayTiles[dimension*i+j].tileType+"\t");
             }
             System.out.println();
         }
     }
+    
 }

@@ -1,16 +1,22 @@
 package task2;
 
 import java.util.Scanner;
+import java.util.Random;
 
 public class Game {
-
+    
     Scanner sc = new Scanner(System.in);
     int turn;
-    int playersNum = 0;
-    int mapSide = 0;
+    int playersNum;
+    int mapSide;
+    Tile[] arrayTiles;
+    int[][] playersStartPosition;
+    Random rand = new Random();
 
     public Game() {
         turn = 0;
+        playersNum = 0;
+        mapSide = 0;
     }
 
     void loop() {
@@ -21,6 +27,12 @@ public class Game {
     }
 
     void start() {
+        startQuestions();
+        MapGenerator mg = new MapGenerator(mapSide);
+        arrayTiles = mg.returnArray();
+    }
+    
+    void startQuestions() {
         while (playersNum > 8 || playersNum < 2) {
             System.out.println("How many players will be playing? (2 to 8 players)\n");
             playersNum = sc.nextInt();
@@ -38,6 +50,13 @@ public class Game {
                 mapSide = sc.nextInt();
                 System.out.println();
             }
+        }
+    }
+    
+    void startPositions() {
+        playersStartPosition = new int[playersNum][2];
+        while(true){
+            
         }
     }
 }
