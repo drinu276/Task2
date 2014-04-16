@@ -6,9 +6,12 @@ import java.util.Random;
 public class Game {
 
     Scanner sc = new Scanner(System.in);
+    boolean won = false;
     int turn;
     int playersNum;
     int mapSide;
+    char direction;
+    char[] playerMoves;
     Tile[] arrayTiles;
     Player[] arrayPlayers;
     int[][] playersStartPosition;
@@ -21,10 +24,49 @@ public class Game {
     }
 
     void loop() {
-        //Get each player's intended direction (logic to enforce boundaries)
+        getMoves();
+        movePlayers();
         //Move players to tiles
         //Check for win
         //Check for water
+        won = true; //TODO remove
+        if (won) {
+            System.out.println("Game over.");
+        } else {
+        turn++;
+        loop();
+        }
+    }
+
+    void getMoves() {
+        for (int i = 0; i < playersNum; i++) {
+            System.out.println("Enter direction of movement, player "+i+", (up, down, left or right) :");
+            playerMoves[i] = sc.next().charAt(0);
+        }
+    }
+
+    void movePlayers() {
+        for (int i = 0; i < playersNum; i++) {
+            if (playerMoves[i] == 'u') {
+                if (arrayPlayers[i].currentposY != 0) {
+                    arrayPlayers[i].moveUp();
+                }
+            } else if (playerMoves[i] == 'd') {
+                if (arrayPlayers[i].currentposY != mapSide-1) {
+                    arrayPlayers[i].moveDown();
+                }
+            } else if (playerMoves[i] == 'l') {
+                if (arrayPlayers[i].currentposX != 0) {
+                    arrayPlayers[i].moveLeft();
+                }
+            } else if (playerMoves[i] == 'r') {
+                if (arrayPlayers[i].currentposX != mapSide-1) {
+                    arrayPlayers[i].moveRight();
+                }
+            } else {
+                System.out.println("Player "+i+" entered an invalid move.");
+            }
+        }
     }
 
     void start() {
@@ -34,6 +76,7 @@ public class Game {
         startPositions();
         outputStartPos();
         copyStartPos();
+        playerMoves = new char[playersNum];
     }
 
     void startQuestions() {
@@ -64,7 +107,7 @@ public class Game {
         while (counter < playersNum) {
             done = false;
             while (!done) {
-                
+
                 double a = ((mapSide * mapSide * rand.nextDouble()));
                 int f = (int) Math.round(a);
                 if (f < 0) {
@@ -81,18 +124,18 @@ public class Game {
             counter++;
         }
     }
-    
+
     void outputStartPos() {
-        for(int i = 0; i<playersNum; i++){
-            System.out.println(playersStartPosition[i][0]+", "+playersStartPosition[i][1]);
+        for (int i = 0; i < playersNum; i++) {
+            System.out.println(playersStartPosition[i][0] + ", " + playersStartPosition[i][1]);
         }
     }
-    
+
     void copyStartPos() {
         arrayPlayers = new Player[playersNum];
-        for(int i = 0; i<playersNum; i++) {
-        Player temp = new Player(playersStartPosition[i][0],playersStartPosition[i][1]);
-        arrayPlayers[i] = temp;
+        for (int i = 0; i < playersNum; i++) {
+            Player temp = new Player(playersStartPosition[i][0], playersStartPosition[i][1]);
+            arrayPlayers[i] = temp;
         }
     }
 }
