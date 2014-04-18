@@ -37,12 +37,12 @@ public class Player {
     }
     
     void setX(int a) {
-        startposX = a;
-        currentposX = startposX;
+        this.startposX = a;
+        this.currentposX = startposX;
     }
     
     void setY(int b) {
-        startposX = b;
-        currentposY = startposY;
+        this.startposY = b;
+        this.currentposY = startposY;
     }
 }

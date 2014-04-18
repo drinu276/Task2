@@ -7,7 +7,7 @@ public class Tile {
     int tileType;
     boolean tileUncovered = false;
 
-    public Tile(int x, int y, int type) {
+    public Tile(int y, int x, int type) {
         tileX = x;
         tileY = y;
         tileType = type;
