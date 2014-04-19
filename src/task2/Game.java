@@ -5,21 +5,20 @@ import java.util.Random;
 
 public class Game {
 
-    Scanner sc = new Scanner(System.in);
-    boolean won = false;
-    boolean first = true;
-    int turn;
-    int playersNum;
-    int mapSide;
-    char direction;
-    char[] playerMoves;
-    Tile[][] arrayTiles;
-    Player[] arrayPlayers;
-    int[][] playersStartPosition;
+    Scanner sc = new Scanner(System.in); //Used for player input
+    boolean won = false; //Controls ending of game
+    boolean first = true; //Used to control what is run first time only
+    int turn; //Holds turn number
+    int playersNum; //Holds number of players playing
+    int playerWon; //Holds ID of player that won
+    int mapSide; //Holds length of side of map
+    char[] playerMoves; //Array that stores player
+    Tile[][] arrayTiles; //Multidimensional array that stores arrays of type Tile, one for each player
+    Player[] arrayPlayers; //Array of type player that stores current and starting position of each player
     Random rand = new Random();
 
     public Game() {
-        turn = 0;
+        turn = 1;
         playersNum = 0;
         mapSide = 0;
     }
@@ -29,15 +28,16 @@ public class Game {
         movePlayers();
         checkWater();
         addUncovered();
-        if (checkWin() == 0) {
-            won = true;
-        } else {
+        if (checkWin() == -1) {
             won = false;
+        } else {
+            won = true;
+            playerWon = checkWin();
         }
 
         outputCurrentPos();
         if (won) {
-            System.out.println("Game over.");
+            System.out.println("Game over. Player "+playerWon+" won, in turn "+turn);
         } else {
             turn++;
             loop();
@@ -49,11 +49,9 @@ public class Game {
         createTilesArray();
         arrayPlayers = new Player[playersNum];
         startPositions();
-        outputStartPos();
-        copyStartPos();
         playerMoves = new char[playersNum];
         outputCurrentPos();
-        System.out.println("Game Start");
+        System.out.println("\nGame Start\n");
         loop();
     }
 
@@ -82,17 +80,13 @@ public class Game {
         MapGenerator mg = new MapGenerator(mapSide);
         arrayTiles = new Tile[playersNum][mapSide];
         for (int i = 0; i < playersNum; i++) {
-
-            /*for(int j = 0; j<(mapSide*mapSide); j++) {
-             if (arrayTiles[i][j] == null) {
-             }*/
             arrayTiles[i] = mg.returnArray();
         }
     }
 
     void startPositions() {
         boolean done;
-        playersStartPosition = new int[playersNum][2];
+        int[][] playersStartPosition = new int[playersNum][2];
         int counter = 0;
         while (counter < playersNum) {
             done = false;
@@ -113,6 +107,15 @@ public class Game {
             }
             counter++;
         }
+        
+        for (int i = 0; i < playersNum; i++) {
+            if (arrayPlayers[i] == null) {
+                arrayPlayers[i] = new Player();
+            }
+            arrayPlayers[i].setX(playersStartPosition[i][0]);
+            arrayPlayers[i].setY(playersStartPosition[i][1]);
+        }
+        
     }
 
     void getMoves() {
@@ -150,17 +153,16 @@ public class Game {
         for (int i = 0; i < arrayTiles[0].length; i++) {
             for (int j = 0; j < playersNum; j++) {
                 if (arrayTiles[0][i].tileType == 1) {
-                if ((arrayPlayers[j].currentposX == arrayTiles[0][i].tileX) && (arrayPlayers[j].currentposY == arrayTiles[0][i].tileY)) {
-                    System.out.println("water");
-                    arrayPlayers[j].currentposX = arrayPlayers[j].startposX;
-                    arrayPlayers[j].currentposY = arrayPlayers[j].startposY;
+                    if ((arrayPlayers[j].currentposX == arrayTiles[0][i].tileX) && (arrayPlayers[j].currentposY == arrayTiles[0][i].tileY)) {
+                        System.out.println("water");
+                        arrayPlayers[j].currentposX = arrayPlayers[j].startposX;
+                        arrayPlayers[j].currentposY = arrayPlayers[j].startposY;
 
-                }
+                    }
                 }
             }
         }
     }
-    
 
     int checkWin() {
         int winX = 0, winY = 0;
@@ -173,10 +175,10 @@ public class Game {
 
         for (int i = 0; i < playersNum; i++) {
             if (arrayPlayers[i].currentposX == winX && arrayPlayers[i].currentposY == winY) {
-                return 0;
+                return i;
             }
         }
-        return 1;
+        return -1;
     }
 
     void addUncovered() {
@@ -208,25 +210,11 @@ public class Game {
         }
     }
 
-    void outputStartPos() {
-        for (int i = 0; i < playersNum; i++) {
-            System.out.println(playersStartPosition[i][0] + ", " + playersStartPosition[i][1]);
-        }
-    }
-
-    void copyStartPos() {
-        for (int i = 0; i < playersNum; i++) {
-            if (arrayPlayers[i] == null) {
-                arrayPlayers[i] = new Player();
-            }
-            arrayPlayers[i].setX(playersStartPosition[i][0]);
-            arrayPlayers[i].setY(playersStartPosition[i][1]);
-        }
-    }
-
     void outputCurrentPos() {
+        System.out.println();
         for (int i = 0; i < playersNum; i++) {
             System.out.println("Player " + i + " is at coords: " + arrayPlayers[i].currentposX + ", " + arrayPlayers[i].currentposY);
         }
+        System.out.println();
     }
 }

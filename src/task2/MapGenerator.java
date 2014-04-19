@@ -25,7 +25,6 @@ public class MapGenerator {
 
     private void start() {
         genLoop();
-        retrieveLoop();
         displayLoop();
     }
     
@@ -62,15 +61,6 @@ public class MapGenerator {
                 arrayTiles[counter] = tile1;
                 counter++;
             }
-        }
-    }
-    
-    void retrieveLoop() {
-        for (int i = 0; i < mapSize; i++) {
-            int tempX = arrayTiles[i].tileX;
-            int tempY = arrayTiles[i].tileY;
-            int tempType = arrayTiles[i].tileType;
-            System.out.println("For tile number " + i + ": X = " + tempX + ", Y = " + tempY + ", Type = " + tempType);
         }
     }
     
