@@ -247,7 +247,65 @@ public class Game {
         }
         System.out.println();
     }
+    
+    
+  void generateHtml(Player player, Tile[][] arrayTile, int playerNumber) {
 
+        PrintWriter fileCreate = null;
+        try {
+            fileCreate = new PrintWriter("map_player_" + (playerNumber + 1) + ".html"); // creating an html file for each player starting from 1 to 8
+        } catch (Exception e) {
+            System.out.println("File does not exist!!");
+        }
+
+        fileCreate.println("<html>");
+        fileCreate.println("<title> player " + (playerNumber + 1) + "</title>");
+        fileCreate.println("<meta http-equiv=\"refresh\" content=\"3\" >");
+        fileCreate.println("<h1><b><center> Player " + (playerNumber + 1) +"<center></b></h1>");
+        fileCreate.println("<body>");
+        fileCreate.println("<table style = \"margin:0px auto; border \"75\" cellspacing \"21\" cellpadding = \"20\" bgcolor =006633 \"\"; >");
+
+        for (int j = 0; j < mapSide; j++) {
+            fileCreate.println("<tr>");
+            for (int i = 0; i < mapSide; i++) {
+                if ((arrayTile[playerNumber][mapSide * j + i].tileUncovered == false)) {
+                    fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/hiddenTile.jpg \">"); //if player position agrees with current axis then player position image
+                } 
+                else if (arrayTile[playerNumber][mapSide * j + i].tileUncovered == true) {
+                	if(((player.getX()==(i)) && (player.getY() == (j))) && (arrayTile[playerNumber][mapSide*j+i].tileType==2) ==true){
+                		fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/winTile.jpg \">"); //win
+                	} else if ((player.getX() == (i)) && (player.getY() == (j))) {
+                        fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/pirateTile.jpg \">"); //if player position agrees with current axis then player position image
+                    } else if (arrayTile[playerNumber][mapSide * j + i].tileType == 0) {
+                        fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/grassTile.jpg \">"); //grass
+
+                    } else if (arrayTile[playerNumber][mapSide * j + i].tileType == 1) {
+                        fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/waterTile.jpg \">"); //water
+                    } 
+                }
+            }
+            fileCreate.println("</tr>");
+        }
+
+        fileCreate.println("</table>");
+
+        if (won) {
+            if (winners[playerNumber] == 1) {
+                fileCreate.println("<center><b><font size= \"20\"; face =\"Gotham\"; color = \"blue\">");
+                fileCreate.println("Congratulations! YOU WIN!!!");
+                fileCreate.println("</center></b></font>");
+            } else {
+                fileCreate.println("<center><b><font size= \"20\"; face =\"Gotham\"; color = \"blue\">");
+                fileCreate.println("GAME OVER");
+                fileCreate.println("</center></b></font>");
+            }
+        }
+        fileCreate.println("</body>");
+        fileCreate.println("</html>");
+        fileCreate.close();
+
+    }  
+/*
     void generateHtml(Player player, Tile[][] arrayTile, int playerNumber) {
 
         PrintWriter fileCreate = null;
@@ -304,4 +362,5 @@ public class Game {
         fileCreate.close();
 
     }
+  */
 }

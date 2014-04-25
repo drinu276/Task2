@@ -25,7 +25,6 @@ public class MapGenerator {
 
     private void start() {
         genLoop();
-        displayLoop();
     }
     
     Tile[] returnArray() {
@@ -62,15 +61,5 @@ public class MapGenerator {
                 counter++;
             }
         }
-    }
-    
-    void displayLoop() {
-        for (int i = 0; i < dimension; i++) {
-            for (int j = 0; j < dimension; j++) {
-                System.out.print(arrayTiles[dimension*i+j].tileType+"\t");
-            }
-            System.out.println();
-        }
-    }
-    
+    }    
 }
