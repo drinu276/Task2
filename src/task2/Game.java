@@ -2,6 +2,7 @@ package task2;
 
 import java.util.Scanner;
 import java.util.Random;
+import java.io.*; // imported to use PrintWriter 
 
 public class Game {
 
@@ -10,8 +11,8 @@ public class Game {
     boolean first = true; //Used to control what is run first time only
     int turn; //Holds turn number
     int playersNum; //Holds number of players playing
-    int playerWon; //Holds ID of player that won
     int mapSide; //Holds length of side of map
+    int[] winners;
     char[] playerMoves; //Array that stores player
     Tile[][] arrayTiles; //Multidimensional array that stores arrays of type Tile, one for each player
     Player[] arrayPlayers; //Array of type player that stores current and starting position of each player
@@ -28,16 +29,25 @@ public class Game {
         movePlayers();
         checkWater();
         addUncovered();
-        if (checkWin() == -1) {
-            won = false;
-        } else {
-            won = true;
-            playerWon = checkWin();
+        winners = checkWin();
+        for (int i = 0; i < playersNum; i++) {
+            if (winners[i] == 1) {
+                won = true;
+                System.out.println("Player " + i + "won");
+            }
+        }
+
+        for (int counter = 0; counter < playersNum; counter++) {
+            generateHtml(arrayPlayers[counter], arrayTiles, counter);
         }
 
         outputCurrentPos();
         if (won) {
-            System.out.println("Game over. Player "+playerWon+" won, in turn "+turn);
+            for (int i = 0; i < playersNum; i++) {
+                if (winners[i] == 1) {
+                    System.out.println("Game over. Player " + i + " won, in turn " + turn);
+                }
+            }
         } else {
             turn++;
             loop();
@@ -49,10 +59,15 @@ public class Game {
         createTilesArray();
         arrayPlayers = new Player[playersNum];
         startPositions();
+        addUncovered();
         playerMoves = new char[playersNum];
         outputCurrentPos();
+        for (int counter = 0; counter < playersNum; counter++) {
+            generateHtml(arrayPlayers[counter], arrayTiles, counter);
+        }
         System.out.println("\nGame Start\n");
         loop();
+
     }
 
     void startQuestions() {
@@ -78,9 +93,16 @@ public class Game {
 
     void createTilesArray() {
         MapGenerator mg = new MapGenerator(mapSide);
-        arrayTiles = new Tile[playersNum][mapSide];
+        Tile[] testTile = mg.returnArray();
+        arrayTiles = new Tile[playersNum][mapSide * mapSide];
+
         for (int i = 0; i < playersNum; i++) {
-            arrayTiles[i] = mg.returnArray();
+            for (int j = 0; j < testTile.length; j++) {
+                arrayTiles[i][j] = new Tile(0, 0, 0);
+                arrayTiles[i][j].tileX = testTile[j].tileX;
+                arrayTiles[i][j].tileY = testTile[j].tileY;
+                arrayTiles[i][j].tileType = testTile[j].tileType;
+            }
         }
     }
 
@@ -107,7 +129,7 @@ public class Game {
             }
             counter++;
         }
-        
+
         for (int i = 0; i < playersNum; i++) {
             if (arrayPlayers[i] == null) {
                 arrayPlayers[i] = new Player();
@@ -115,12 +137,11 @@ public class Game {
             arrayPlayers[i].setX(playersStartPosition[i][0]);
             arrayPlayers[i].setY(playersStartPosition[i][1]);
         }
-        
     }
 
     void getMoves() {
         for (int i = 0; i < playersNum; i++) {
-            System.out.println("Enter direction of movement, player " + i + ", (up, down, left or right) :");
+            System.out.println("Enter direction of movement, player " + i + ", ((U)p, (D)own, (L)eft or (R)ight) :");
             playerMoves[i] = sc.next().charAt(0);
         }
     }
@@ -154,7 +175,8 @@ public class Game {
             for (int j = 0; j < playersNum; j++) {
                 if (arrayTiles[0][i].tileType == 1) {
                     if ((arrayPlayers[j].currentposX == arrayTiles[0][i].tileX) && (arrayPlayers[j].currentposY == arrayTiles[0][i].tileY)) {
-                        System.out.println("water");
+                        System.out.println("Player " + j + " you have fallen in the water");
+                        arrayTiles[j][i].tileUncovered = true; // uncover the water tile
                         arrayPlayers[j].currentposX = arrayPlayers[j].startposX;
                         arrayPlayers[j].currentposY = arrayPlayers[j].startposY;
 
@@ -162,10 +184,13 @@ public class Game {
                 }
             }
         }
+
     }
 
-    int checkWin() {
-        int winX = 0, winY = 0;
+    int[] checkWin() {
+        int winX = 0, winY = 0, counter = 0;
+        int[] winPlayers = new int[playersNum];
+
         for (int i = 0; i < arrayTiles[0].length; i++) {
             if (arrayTiles[0][i].tileType == 2) {
                 winX = arrayTiles[0][i].tileX;
@@ -173,12 +198,17 @@ public class Game {
             }
         }
 
-        for (int i = 0; i < playersNum; i++) {
+        for (int i = 0; i < winPlayers.length; i++) {
+            winPlayers[i] = 0;
+        }
+
+        for (int i = 0; i < winPlayers.length; i++) {
             if (arrayPlayers[i].currentposX == winX && arrayPlayers[i].currentposY == winY) {
-                return i;
+                winPlayers[i] = 1;
             }
         }
-        return -1;
+
+        return winPlayers;
     }
 
     void addUncovered() {
@@ -187,7 +217,7 @@ public class Game {
             for (int i = 0; i < playersNum; i++) {
                 for (int j = 0; j < arrayTiles[i].length; j++) {
                     if ((arrayTiles[i][j].tileX == arrayPlayers[i].startposX) && (arrayTiles[i][j].tileY == arrayPlayers[i].startposY)) {
-                        arrayTiles[i][j].tileUncovered = true;
+                        arrayTiles[i][j].uncoverTile();
                     }
                 }
             }
@@ -195,7 +225,7 @@ public class Game {
             for (int i = 0; i < playersNum; i++) {
                 for (int j = 0; j < arrayTiles[i].length; j++) {
                     if ((arrayTiles[i][j].tileX == arrayPlayers[i].currentposX) && (arrayTiles[i][j].tileY == arrayPlayers[i].currentposY)) {
-                        arrayTiles[i][j].tileUncovered = true;
+                        arrayTiles[i][j].uncoverTile();
                     }
                 }
             }
@@ -203,7 +233,7 @@ public class Game {
             for (int i = 0; i < playersNum; i++) {
                 for (int j = 0; j < arrayTiles[i].length; j++) {
                     if ((arrayTiles[i][j].tileX == arrayPlayers[i].currentposX) && (arrayTiles[i][j].tileY == arrayPlayers[i].currentposY)) {
-                        arrayTiles[i][j].tileUncovered = true;
+                        arrayTiles[i][j].uncoverTile();
                     }
                 }
             }
@@ -216,5 +246,62 @@ public class Game {
             System.out.println("Player " + i + " is at coords: " + arrayPlayers[i].currentposX + ", " + arrayPlayers[i].currentposY);
         }
         System.out.println();
+    }
+
+    void generateHtml(Player player, Tile[][] arrayTile, int playerNumber) {
+
+        PrintWriter fileCreate = null;
+        try {
+            fileCreate = new PrintWriter("map_player_" + (playerNumber + 1) + ".html"); // creating an html file for each player starting from 1 to 8
+        } catch (Exception e) {
+            System.out.println("File does not exist!!");
+        }
+
+        fileCreate.println("<html>");
+        fileCreate.println("<title> player " + (playerNumber + 1) + "</title>");
+        fileCreate.println("<meta http-equiv=\"refresh\" content=\"3\" >");
+        fileCreate.println("<h1><b><center> Player " + (playerNumber + 1) + "<center></b></h1>");
+        fileCreate.println("<body>");
+        fileCreate.println("<table style = \"margin:0px auto; border \" 75\" cellspacing \"21\" cellpadding = \"21\" bgcolor =006633 \"\"; >");
+
+        for (int j = 0; j < mapSide; j++) {
+            fileCreate.println("<tr>");
+            for (int i = 0; i < mapSide; i++) {
+                if ((arrayTile[playerNumber][mapSide * j + i].tileUncovered == false)) {
+                    fileCreate.println("<td width=\"15\" align = \"center\" background =  \"images/hiddenTile.jpg \">"); //if player position agrees with current axis then player position image
+                } else if (arrayTile[playerNumber][mapSide * j + i].tileUncovered == true) {
+                    if ((player.getX() == (i)) && (player.getY() == (j))) {
+                        fileCreate.println("<td width=\"15\" align = \"center\" background =  \"images/pirateTile.jpg \">"); //if player position agrees with current axis then player position image
+                    } else if (arrayTile[playerNumber][mapSide * j + i].tileType == 0) {
+                        fileCreate.println("<td width=\"15\" align = \"center\" background =  \"images/grassTile.jpg \">"); //grass
+
+                    } else if (arrayTile[playerNumber][mapSide * j + i].tileType == 1) {
+                        fileCreate.println("<td width=\"15\" align = \"center\" background =  \"images/waterTile.jpg \">"); //water
+
+                    } else if (arrayTile[playerNumber][mapSide * j + i].tileType == 2) {
+                        fileCreate.println("<td width=\"15\" align = \"center\" background =  \"images/winTile.jpg \">"); //win
+                    }
+                }
+            }
+            fileCreate.println("</tr>");
+        }
+
+        fileCreate.println("</table>");
+
+        if (won) { 
+                if (winners[playerNumber] == 1) {
+                    fileCreate.println("<center><b><font size= \"20\"; face =\"Gotham\"; color = \"blue\">");
+                    fileCreate.println("YOU WIN!!! ");
+                    fileCreate.println("</center></b></font>");
+                } else {
+                    fileCreate.println("<center><b><font size= \"20\"; face =\"Gotham\"; color = \"blue\">");
+                    fileCreate.println("GAME OVER");
+                    fileCreate.println("</center></b></font>");
+                }
+        }
+        fileCreate.println("</body>");
+        fileCreate.println("</html>");
+        fileCreate.close();
+
     }
 }

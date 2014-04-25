@@ -12,4 +12,8 @@ public class Tile {
         tileY = y;
         tileType = type;
     }
+    
+    void uncoverTile() {
+        this.tileUncovered = true;
+    }
 }

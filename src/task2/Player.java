@@ -45,4 +45,12 @@ public class Player {
         this.startposY = b;
         this.currentposY = startposY;
     }
+    
+    int getX(){
+    	return currentposX;
+    }
+    
+    int getY(){
+    	return currentposY;
+    }
 }
