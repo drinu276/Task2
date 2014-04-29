@@ -24,7 +24,7 @@ public class Game {
         mapSide = 0;
     }
 
-    void loop() {
+    int loop() {
         getMoves();
         movePlayers();
         checkWater();
@@ -33,7 +33,7 @@ public class Game {
         for (int i = 0; i < playersNum; i++) {
             if (winners[i] == 1) {
                 won = true;
-                System.out.println("Player " + i + "won");
+                System.out.println("Player " + i + " won");
             }
         }
 
@@ -52,9 +52,10 @@ public class Game {
             turn++;
             loop();
         }
+        return 0;
     }
 
-    void start() {
+    int start() {
         startQuestions();
         createTilesArray();
         arrayPlayers = new Player[playersNum];
@@ -67,32 +68,53 @@ public class Game {
         }
         System.out.println("\nGame Start\n");
         loop();
-
+        return 0;
     }
 
-    void startQuestions() {
-        while (playersNum > 8 || playersNum < 2) {
+    int startQuestions() {
+        while (checkNumberOfPlayers(playersNum) == false) {
             System.out.println("How many players will be playing? (2 to 8 players)\n");
             playersNum = sc.nextInt();
             System.out.println();
         }
+
+        while (checkMapSize(playersNum, mapSide) == false) {
+            mapSide = sc.nextInt();
+            System.out.println();
+        }
+        return 0;
+    }
+
+    boolean checkNumberOfPlayers(int playNum) {
+        if (playNum > 8 || playNum < 2) {
+            return false;
+        } else {
+            playersNum = playNum;
+            return true;
+        }
+    }
+
+    boolean checkMapSize(int playersNum, int mapSide) {
         if (playersNum >= 2 && playersNum <= 4) {
-            while (mapSide > 50 || mapSide < 5) {
+            if (mapSide > 50 || mapSide < 5) {
                 System.out.println("What size will the edge of the map be? (5 to 50 tiles)\n");
-                mapSide = sc.nextInt();
-                System.out.println();
+                return false;
+            } else {
+                return true;
             }
         } else {
-            while (mapSide > 50 || mapSide < 8) {
+            if (mapSide > 50 || mapSide < 8) {
                 System.out.println("What size will the edge of the map be? (8 to 50 tiles)\n");
-                mapSide = sc.nextInt();
-                System.out.println();
+                return false;
+            } else {
+                return true;
             }
         }
     }
 
     void createTilesArray() {
         MapGenerator mg = new MapGenerator(mapSide);
+        mg.genLoop();
         Tile[] testTile = mg.returnArray();
         arrayTiles = new Tile[playersNum][mapSide * mapSide];
 
@@ -148,19 +170,19 @@ public class Game {
 
     void movePlayers() {
         for (int i = 0; i < playersNum; i++) {
-            if (playerMoves[i] == 'u') {
+            if (playerMoves[i] == 'u' || playerMoves[i] == 'U') {
                 if (arrayPlayers[i].currentposY != 0) {
                     arrayPlayers[i].moveUp();
                 }
-            } else if (playerMoves[i] == 'd') {
+            } else if (playerMoves[i] == 'd' || playerMoves[i] == 'D') {
                 if (arrayPlayers[i].currentposY != mapSide - 1) {
                     arrayPlayers[i].moveDown();
                 }
-            } else if (playerMoves[i] == 'l') {
+            } else if (playerMoves[i] == 'l' || playerMoves[i] == 'L') {
                 if (arrayPlayers[i].currentposX != 0) {
                     arrayPlayers[i].moveLeft();
                 }
-            } else if (playerMoves[i] == 'r') {
+            } else if (playerMoves[i] == 'r' || playerMoves[i] == 'R') {
                 if (arrayPlayers[i].currentposX != mapSide - 1) {
                     arrayPlayers[i].moveRight();
                 }
@@ -170,7 +192,7 @@ public class Game {
         }
     }
 
-    void checkWater() {
+    int checkWater() {
         for (int i = 0; i < arrayTiles[0].length; i++) {
             for (int j = 0; j < playersNum; j++) {
                 if (arrayTiles[0][i].tileType == 1) {
@@ -184,11 +206,11 @@ public class Game {
                 }
             }
         }
-
+        return 0;
     }
 
     int[] checkWin() {
-        int winX = 0, winY = 0, counter = 0;
+        int winX = 0, winY = 0;
         int[] winPlayers = new int[playersNum];
 
         for (int i = 0; i < arrayTiles[0].length; i++) {
@@ -247,21 +269,20 @@ public class Game {
         }
         System.out.println();
     }
-    
-    
-  void generateHtml(Player player, Tile[][] arrayTile, int playerNumber) {
+
+    void generateHtml(Player player, Tile[][] arrayTile, int playerNumber) {
 
         PrintWriter fileCreate = null;
         try {
-            fileCreate = new PrintWriter("map_player_" + (playerNumber + 1) + ".html"); // creating an html file for each player starting from 1 to 8
+            fileCreate = new PrintWriter("map_player_" + playerNumber + ".html"); // creating an html file for each player starting from 1 to 8
         } catch (Exception e) {
             System.out.println("File does not exist!!");
         }
 
         fileCreate.println("<html>");
-        fileCreate.println("<title> player " + (playerNumber + 1) + "</title>");
+        fileCreate.println("<title> player " + playerNumber + "</title>");
         fileCreate.println("<meta http-equiv=\"refresh\" content=\"3\" >");
-        fileCreate.println("<h1><b><center> Player " + (playerNumber + 1) +"<center></b></h1>");
+        fileCreate.println("<h1><b><center> Player " + playerNumber + "<center></b></h1>");
         fileCreate.println("<body>");
         fileCreate.println("<table style = \"margin:0px auto; border \"75\" cellspacing \"21\" cellpadding = \"20\" bgcolor =006633 \"\"; >");
 
@@ -270,18 +291,17 @@ public class Game {
             for (int i = 0; i < mapSide; i++) {
                 if ((arrayTile[playerNumber][mapSide * j + i].tileUncovered == false)) {
                     fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/hiddenTile.jpg \">"); //if player position agrees with current axis then player position image
-                } 
-                else if (arrayTile[playerNumber][mapSide * j + i].tileUncovered == true) {
-                	if(((player.getX()==(i)) && (player.getY() == (j))) && (arrayTile[playerNumber][mapSide*j+i].tileType==2) ==true){
-                		fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/winTile.jpg \">"); //win
-                	} else if ((player.getX() == (i)) && (player.getY() == (j))) {
+                } else if (arrayTile[playerNumber][mapSide * j + i].tileUncovered == true) {
+                    if (((player.getX() == (i)) && (player.getY() == (j))) && (arrayTile[playerNumber][mapSide * j + i].tileType == 2) == true) {
+                        fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/winTile.jpg \">"); //win
+                    } else if ((player.getX() == (i)) && (player.getY() == (j))) {
                         fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/pirateTile.jpg \">"); //if player position agrees with current axis then player position image
                     } else if (arrayTile[playerNumber][mapSide * j + i].tileType == 0) {
                         fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/grassTile.jpg \">"); //grass
 
                     } else if (arrayTile[playerNumber][mapSide * j + i].tileType == 1) {
                         fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/waterTile.jpg \">"); //water
-                    } 
+                    }
                 }
             }
             fileCreate.println("</tr>");
@@ -304,63 +324,6 @@ public class Game {
         fileCreate.println("</html>");
         fileCreate.close();
 
-    }  
-/*
-    void generateHtml(Player player, Tile[][] arrayTile, int playerNumber) {
-
-        PrintWriter fileCreate = null;
-        try {
-            fileCreate = new PrintWriter("map_player_" + (playerNumber + 1) + ".html"); // creating an html file for each player starting from 1 to 8
-        } catch (Exception e) {
-            System.out.println("File does not exist!!");
-        }
-
-        fileCreate.println("<html>");
-        fileCreate.println("<title> player " + (playerNumber + 1) + "</title>");
-        fileCreate.println("<meta http-equiv=\"refresh\" content=\"3\" >");
-        fileCreate.println("<h1><b><center> Player " + (playerNumber + 1) + "<center></b></h1>");
-        fileCreate.println("<body>");
-        fileCreate.println("<table style = \"margin:0px auto; border \" 75\" cellspacing \"21\" cellpadding = \"21\" bgcolor =006633 \"\"; >");
-
-        for (int j = 0; j < mapSide; j++) {
-            fileCreate.println("<tr>");
-            for (int i = 0; i < mapSide; i++) {
-                if ((arrayTile[playerNumber][mapSide * j + i].tileUncovered == false)) {
-                    fileCreate.println("<td width=\"15\" align = \"center\" background =  \"images/hiddenTile.jpg \">"); //if player position agrees with current axis then player position image
-                } else if (arrayTile[playerNumber][mapSide * j + i].tileUncovered == true) {
-                    if ((player.getX() == (i)) && (player.getY() == (j))) {
-                        fileCreate.println("<td width=\"15\" align = \"center\" background =  \"images/pirateTile.jpg \">"); //if player position agrees with current axis then player position image
-                    } else if (arrayTile[playerNumber][mapSide * j + i].tileType == 0) {
-                        fileCreate.println("<td width=\"15\" align = \"center\" background =  \"images/grassTile.jpg \">"); //grass
-
-                    } else if (arrayTile[playerNumber][mapSide * j + i].tileType == 1) {
-                        fileCreate.println("<td width=\"15\" align = \"center\" background =  \"images/waterTile.jpg \">"); //water
-
-                    } else if (arrayTile[playerNumber][mapSide * j + i].tileType == 2) {
-                        fileCreate.println("<td width=\"15\" align = \"center\" background =  \"images/winTile.jpg \">"); //win
-                    }
-                }
-            }
-            fileCreate.println("</tr>");
-        }
-
-        fileCreate.println("</table>");
-
-        if (won) { 
-                if (winners[playerNumber] == 1) {
-                    fileCreate.println("<center><b><font size= \"20\"; face =\"Gotham\"; color = \"blue\">");
-                    fileCreate.println("YOU WIN!!! ");
-                    fileCreate.println("</center></b></font>");
-                } else {
-                    fileCreate.println("<center><b><font size= \"20\"; face =\"Gotham\"; color = \"blue\">");
-                    fileCreate.println("GAME OVER");
-                    fileCreate.println("</center></b></font>");
-                }
-        }
-        fileCreate.println("</body>");
-        fileCreate.println("</html>");
-        fileCreate.close();
-
     }
-  */
+
 }

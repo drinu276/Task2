@@ -20,13 +20,8 @@ public class MapGenerator {
         waterTilesMax = a - 1;
         mapSize = dimension * dimension;
         arrayTiles = new Tile[mapSize];
-        start();
     }
 
-    private void start() {
-        genLoop();
-    }
-    
     Tile[] returnArray() {
         return arrayTiles;
     }
@@ -49,11 +44,10 @@ public class MapGenerator {
                 type = 0;
             }
         }
-
         return type;
     }
 
-    void genLoop() {
+    int genLoop() {
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
                 Tile tile1 = new Tile(i, j, typeSet(counter));
@@ -61,5 +55,6 @@ public class MapGenerator {
                 counter++;
             }
         }
-    }    
+        return 0;
+    }
 }

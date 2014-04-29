@@ -30,11 +30,6 @@ public class Player {
     void moveRight() {
         currentposX += 1;
     }
-
-    int[] returnPos() {
-        int[] arrayX = {currentposX, currentposY};
-        return arrayX;
-    }
     
     void setX(int a) {
         this.startposX = a;
