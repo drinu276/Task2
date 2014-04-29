@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package task2;
+package com.pest.demo;
 
 import org.junit.After;
 import org.junit.AfterClass;

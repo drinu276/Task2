@@ -1,4 +1,4 @@
-package task2;
+package com.pest.demo;
 
 public class Task2 {
 
