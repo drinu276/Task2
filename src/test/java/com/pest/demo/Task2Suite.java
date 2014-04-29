@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.pest.demo;
+package task2;
 
 import org.junit.After;
 import org.junit.AfterClass;

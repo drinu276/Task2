@@ -1,4 +1,4 @@
-package com.pest.demo;
+package task2;
 
 import java.util.Random;
 
