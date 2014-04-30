@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  * @author Andrea
  */
 public class MapGeneratorTest {
-    Tile[] testT = null;
+    
     public MapGeneratorTest() {
     }
     
@@ -44,10 +44,12 @@ public class MapGeneratorTest {
     @Test
     public void testReturnArray() {
         System.out.println("returnArray");
-        MapGenerator instance = new MapGenerator(0);
+        MapGenerator instance = null;
         Tile[] expResult = null;
-        Tile[] result = testT;
+        Tile[] result = instance.returnArray();
         assertArrayEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 
     /**
@@ -56,12 +58,13 @@ public class MapGeneratorTest {
     @Test
     public void testTypeSet() {
         System.out.println("typeSet");
-        int currTile = 23; //Since the return value is calculated randomly, there is no sure way to test except if currTile = 23 in which case the next tile is a win
-        MapGenerator instance = new MapGenerator(0);
-        int expResult = 2;
+        int currTile = 0;
+        MapGenerator instance = null;
+        int expResult = 0;
         int result = instance.typeSet(currTile);
         assertEquals(expResult, result);
-        //assertEquals(2, map1.typeSet(23));
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 
     /**
@@ -70,9 +73,12 @@ public class MapGeneratorTest {
     @Test
     public void testGenLoop() {
         System.out.println("genLoop");
-        MapGenerator instance = new MapGenerator(5);
+        MapGenerator instance = null;
         int expResult = 0;
-        assertEquals(instance.genLoop(), expResult);    
+        int result = instance.genLoop();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
     
 }
