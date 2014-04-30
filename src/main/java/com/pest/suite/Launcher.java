@@ -1,4 +1,4 @@
-package task2;
+package com.pest.suite;
 
 /**
  * This class constitutes the main entry point for PESTSuite.
