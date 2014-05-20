@@ -7,10 +7,19 @@ public class Tile {
     int tileType;
     boolean tileUncovered = false;
 
+    //TODO empty constructor??? !! 
+    public Tile(){
+    	
+    }
+    
     public Tile(int y, int x, int type) {
         tileX = x;
         tileY = y;
         tileType = type;
+    }
+    
+    public int getType(){
+    	return tileType;
     }
     
     void uncoverTile() {

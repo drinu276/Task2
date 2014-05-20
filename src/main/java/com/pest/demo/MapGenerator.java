@@ -2,59 +2,41 @@ package task2;
 
 import java.util.Random;
 
-public class MapGenerator {
+public abstract class MapGenerator {
 
-    private final int dimension;
-    private final int mapSize;
-    private final int waterTilesMax;
-    private int waterTilesCurr;
-    private boolean winTileCreated;
-    Tile[] arrayTiles;
-    Random rand = new Random();
-    private int counter;
+	protected static MapGenerator map = null; 
 
-    public MapGenerator(int a) {
-        winTileCreated = false;
-        counter = 0;
-        dimension = a;
-        waterTilesMax = a - 1;
-        mapSize = dimension * dimension;
-        arrayTiles = new Tile[mapSize];
-    }
+	static int dimension;
+	static int mapSize;
+	boolean winTileCreated;
+	protected static Tile[][] arrayTiles;
+	int counter;
 
-    Tile[] returnArray() {
-        return arrayTiles;
-    }
+	public MapGenerator(int a) {
+		winTileCreated = false;
+//		counter = 0;
+		dimension = a;
+		mapSize = dimension * dimension;
+//		arrayTiles = new Tile[mapSize];
+		generateLoop();
 
-    int typeSet(int currTile) { //Type 0 = grass, Type 1 = water, Type 2 = win
-        int type;
-        int a = (int) (Math.round(10 * rand.nextDouble()));
-
-        if (currTile == 23 && !winTileCreated) {
-            type = 2;
-        } else {
-
-            if (a > 8 && !winTileCreated) {
-                type = 2;
-                winTileCreated = true;
-            } else if (a <= 2 && (waterTilesCurr < waterTilesMax)) {
-                type = 1;
-                waterTilesCurr++;
-            } else {
-                type = 0;
-            }
-        }
-        return type;
-    }
-
-    int genLoop() {
-        for (int i = 0; i < dimension; i++) {
-            for (int j = 0; j < dimension; j++) {
-                Tile tile1 = new Tile(i, j, typeSet(counter));
-                arrayTiles[counter] = tile1;
-                counter++;
-            }
-        }
-        return 0;
-    }
+	}
+	
+	public static void setSize(int size){
+		mapSize = size;
+	}
+	
+	public static int getSize (){
+		return mapSize;
+	}
+	
+	public static Tile getTile(int posX, int posY){
+		return arrayTiles[posX][posY];
+	}
+	
+	public static Tile[][] getArrayTiles(){
+		return arrayTiles;
+	}
+		
+	public abstract void generateLoop();
 }

@@ -2,8 +2,8 @@ package task2;
 
 public class Player {
 
-    int startposX;
-    int startposY;
+    private int startposX;
+    private int startposY;
     int currentposX;
     int currentposY;
 
@@ -32,12 +32,12 @@ public class Player {
     }
     
     void setX(int a) {
-        this.startposX = a;
+      //  this.startposX = a;
         this.currentposX = startposX;
     }
     
     void setY(int b) {
-        this.startposY = b;
+      //  this.startposX = a;
         this.currentposY = startposY;
     }
     
@@ -47,5 +47,12 @@ public class Player {
     
     int getY(){
     	return currentposY;
+    }
+    
+    void setStartPosition(int a, int b){
+    	this.startposX = a;
+        this.startposX = a;
+    	setX(a);
+    	setY(b);
     }
 }
