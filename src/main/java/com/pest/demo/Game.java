@@ -145,7 +145,7 @@ public class Game {
 		MapGeneratorCreator mg = new MapGeneratorCreator();
 		mg.createMap(mapSide, mapsType);
 
-		/*arrayTiles = new Tile[playersNum][mapSide * mapSide];
+		/*arrayTiles = new Tile[playersNum][mapSide * mapSide]; //?????????????????????
 
 		for (int i = 0; i < playersNum; i++) {
 			for (int j = 0; j < testTile.length; j++) {
@@ -162,9 +162,9 @@ public class Game {
 		boolean done;
 		int[][] playersStartPosition = new int[playersNum][2];
 		int counter = 0;
-		while (counter < playersNum) {
+		/*for(int i=0; i< playersNum; i++){
 			done = false;
-			
+
 			while (!done) {
 				double a = ((mapSide * mapSide * rand.nextDouble())); //randomly select a position
 				int f = (int) Math.round(a);
@@ -173,12 +173,12 @@ public class Game {
 				} else if (f > 24) {
 					f = 24;
 				}
-
-				//if()
-				
+			}
 
 
-			    /*double a = ((mapSide * mapSide * rand.nextDouble()));
+
+
+			double a = ((mapSide * mapSide * rand.nextDouble()));
 				int f = (int) Math.round(a);
 				if (f < 0) {
 					f = 0;
@@ -189,18 +189,16 @@ public class Game {
 					playersStartPosition[counter][0] = arrayTiles[0][f].tileX;
 					playersStartPosition[counter][1] = arrayTiles[0][f].tileY;
 					done = true;
-				}*/
-			}
-			counter++;
+				}
 		}
-
+		counter ++;
 		for (int i = 0; i < playersNum; i++) {
 			if (arrayPlayers[i] == null) {
 				arrayPlayers[i] = new Player();
 			}
 			arrayPlayers[i].setX(playersStartPosition[i][0]);
 			arrayPlayers[i].setY(playersStartPosition[i][1]);
-		}
+		}*/
 	}
 
 	void getMoves() {
