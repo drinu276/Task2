@@ -21,7 +21,7 @@ public class Game {
 	int[] winners;
 	char[] playerMoves; //Array that stores player
 	//TODO REMOVED
-	//Tile[][] arrayTiles; //Multidimensional array that stores arrays of type Tile, one for each player
+	Tile[][] arrayTiles; //Multidimensional array that stores arrays of type Tile, one for each player
 	Player[] arrayPlayers; //Array of type player that stores current and starting position of each player
 
 	public Game() {
@@ -32,11 +32,10 @@ public class Game {
 
 	public int start() {
 		startQuestions();
-		//   createTilesArray();
 		arrayPlayers = new Player[playersNum]; // array of size number of Players
 		startPositions();
-		/*addUncovered();
-		playerMoves = new char[playersNum];
+		addUncovered();
+		/*playerMoves = new char[playersNum];
 		outputCurrentPos();
 		for (int counter = 0; counter < playersNum; counter++) {
 			//generateHtml(arrayPlayers[counter], arrayTiles, counter);
@@ -111,7 +110,7 @@ public class Game {
 
 	int loop() {
 		getMoves();
-		movePlayers();
+		//movePlayers();
 		//checkWater();
 		addUncovered();
 		winners = checkWin();
@@ -159,78 +158,56 @@ public class Game {
 	}
 
 	void startPositions() {
+		MapGenerator maps = null;
+		Tile[][] arrayTiles = maps.getArrayTiles(); 
+		System.out.println(maps.getTile(0,2).getType());
 		boolean done;
-		int[][] playersStartPosition = new int[playersNum][2];
+		//	int[][] playersStartPosition = new int[playersNum][2];
 		int counter = 0;
-		/*for(int i=0; i< playersNum; i++){
+
+		for(int i=0; i< playersNum; i++){
 			done = false;
 
-			while (!done) {
-				double a = ((mapSide * mapSide * rand.nextDouble())); //randomly select a position
-				int f = (int) Math.round(a);
-				if (f < 0) {
-					f = 0;
-				} else if (f > 24) {
-					f = 24;
+			for (int a  = 0; a < playersNum; a++) {
+				if (arrayPlayers[a] == null) {
+					arrayPlayers[a] = new Player();
 				}
 			}
+			
+			while (!done) {
+				double aX = ((mapSide * rand.nextDouble())); //randomly select a position for x
+				double aY = (( mapSide * rand.nextDouble()));
 
-
-
-
-			double a = ((mapSide * mapSide * rand.nextDouble()));
-				int f = (int) Math.round(a);
-				if (f < 0) {
-					f = 0;
-				} else if (f > 24) {
-					f = 24;
+				int f = (int) Math.round(aX);
+				int g = (int) Math.round(aY);
+				if (f < 0 || g<0) {
+					f = 1;
+					g=1;
+				} else if (f > mapSide || g>mapSide) {
+					f = mapSide;
+					g= mapSide;
 				}
-				if (arrayTiles[0][f].tileType == 0) {
-					playersStartPosition[counter][0] = arrayTiles[0][f].tileX;
-					playersStartPosition[counter][1] = arrayTiles[0][f].tileY;
+
+				System.out.println("TILE TYPE FOR XF "+(g-1)+" AND YG "+(f-1) + "is " + maps.getTile(g-1,f-1).getType());
+				if(maps.getTile(g-1, f-1).getType()==0){
+					arrayPlayers[i].startPositions(g-1, f-1);
 					done = true;
 				}
-		}
-		counter ++;
-		for (int i = 0; i < playersNum; i++) {
-			if (arrayPlayers[i] == null) {
-				arrayPlayers[i] = new Player();
 			}
-			arrayPlayers[i].setX(playersStartPosition[i][0]);
-			arrayPlayers[i].setY(playersStartPosition[i][1]);
-		}*/
+			counter ++;
+			
+		}
 	}
 
 	void getMoves() {
 		for (int i = 0; i < playersNum; i++) {
 			System.out.println("Enter direction of movement, player " + i + ", ((U)p, (D)own, (L)eft or (R)ight) :");
 			playerMoves[i] = sc.next().charAt(0);
+			arrayPlayers[i].movePlayers(playerMoves[i], i);
 		}
 	}
 
-	void movePlayers() {
-		for (int i = 0; i < playersNum; i++) {
-			if (playerMoves[i] == 'u' || playerMoves[i] == 'U') {
-				if (arrayPlayers[i].currentposY != 0) {
-					arrayPlayers[i].moveUp();
-				}
-			} else if (playerMoves[i] == 'd' || playerMoves[i] == 'D') {
-				if (arrayPlayers[i].currentposY != mapSide - 1) {
-					arrayPlayers[i].moveDown();
-				}
-			} else if (playerMoves[i] == 'l' || playerMoves[i] == 'L') {
-				if (arrayPlayers[i].currentposX != 0) {
-					arrayPlayers[i].moveLeft();
-				}
-			} else if (playerMoves[i] == 'r' || playerMoves[i] == 'R') {
-				if (arrayPlayers[i].currentposX != mapSide - 1) {
-					arrayPlayers[i].moveRight();
-				}
-			} else {
-				System.out.println("Player " + i + " entered an invalid move.");
-			}
-		}
-	}
+
 
 	/*int checkWater() {
 		for (int i = 0; i < arrayTiles[0].length; i++) {
@@ -274,11 +251,12 @@ public class Game {
 	}
 
 	void addUncovered() {
+		
 		/*if (first) {
 			first = false;
 			for (int i = 0; i < playersNum; i++) {
 				for (int j = 0; j < arrayTiles[i].length; j++) {
-					if ((arrayTiles[i][j].tileX == arrayPlayers[i].startposX) && (arrayTiles[i][j].tileY == arrayPlayers[i].startposY)) {
+					if () {
 						arrayTiles[i][j].uncoverTile();
 					}
 				}
@@ -310,7 +288,7 @@ public class Game {
 		System.out.println();
 	}
 
-	void generateHtml(Player player, Tile[][] arrayTile, int playerNumber) {
+	/*void generateHtml(Player player, Tile[][] arrayTile, int playerNumber) {
 
 		PrintWriter fileCreate = null;
 		try {
@@ -364,6 +342,6 @@ public class Game {
 		fileCreate.println("</html>");
 		fileCreate.close();
 
-	}
+	}*/
 
 }

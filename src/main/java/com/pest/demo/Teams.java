@@ -11,6 +11,9 @@ public class Teams implements Subject {
 		observer = new ArrayList <Observer>();
 	}
 	
+	public ArrayList<Observer> getPlayerList(){
+		return observer;
+	}
 	
 	@Override
 	public void register(Observer object) {

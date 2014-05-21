@@ -19,6 +19,7 @@ public abstract class MapGenerator {
 		mapSize = dimension * dimension;
 //		arrayTiles = new Tile[mapSize];
 		generateLoop();
+		displayLoop();
 
 	}
 	
@@ -37,6 +38,16 @@ public abstract class MapGenerator {
 	public static Tile[][] getArrayTiles(){
 		return arrayTiles;
 	}
+	
+	public void displayLoop() {
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
+                System.out.print(arrayTiles[i][j].getType()+"\t");
+            }
+            System.out.println();
+        }
+        
+    }
 		
 	public abstract void generateLoop();
 }

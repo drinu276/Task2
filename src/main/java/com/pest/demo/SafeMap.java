@@ -62,6 +62,7 @@ public class SafeMap extends MapGenerator {
 			}
 		}
 
+		//System.out.println(map.getArrayTiles());
 		System.out.println("array of tiles created... ");
 
 	}
