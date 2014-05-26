@@ -18,6 +18,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
+
 import org.junit.*;
 
 
@@ -199,13 +200,48 @@ public class GameTest {
 		
 	}
 	
+	@SuppressWarnings("null")
 	@Test
 	public void testSetUpTeams(){
-		Player[] arrayPlayers;
-		int playerNum =3;		
+		int playerNum =3;	
+		int playerCount =0;
+		int numberOfTeams=3;
+		int playersRem =playerNum - numberOfTeams;
+		Player[] arrayPlayers = new Player[playerNum];
+
 		game.setUpTeams(3,playerNum);		
 		assertEquals(0, game.arrayPlayers[0].getTeam());
 		assertEquals(1, game.arrayPlayers[1].getTeam());
+		
+		for (int i = 0; i < numberOfTeams; i++) { //place the first n players in the first n teams
+			arrayPlayers[playerCount] = new Player();
+			arrayPlayers[i].setTeam(i);
+			assertEquals(i, game.arrayPlayers[i].getTeam());
+			playerCount++;
+		}
+		if (playersRem > numberOfTeams) {
+			for (int i = 0; i < numberOfTeams; i++) {
+				arrayPlayers[playerCount] = new Player();
+				arrayPlayers[playerCount].setTeam(i);
+				
+				assertEquals(i,arrayPlayers[playerCount].getTeam());
+				
+				playerCount++;
+				playersRem--;
+			}
+		} else {
+			for (int i = 0; i < playersRem; i++) {
+				arrayPlayers[playerCount] = new Player();
+				arrayPlayers[playerCount].setTeam(i);
+				
+				assertEquals(i,arrayPlayers[playerCount].getTeam());
+
+				playerCount++;
+				playersRem--;
+			}
+		}
+		
+		
 	}
 
 	@Test
@@ -305,10 +341,7 @@ public class GameTest {
 		assertEquals(winners[0], game.checkWin(arrayTiles, player, 2)[0]);
 		//assertNotEquals(winners[1], game.checkWin(arrayTiles, player,2)[1]);
 		
-		//Safe Map
-		assertEquals(2, arrayTiles[1].tileType);
-		assertEquals(winX,player[1].currentposX );
-		assertEquals(winY, player[1].currentposY);
+		
 	}
 	
 	@Test
