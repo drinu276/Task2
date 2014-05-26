@@ -86,11 +86,7 @@ public class GameTest {
 		//win Tiles Safe
 		winX = arrayTiles[1].tileX =3;
 		winY = arrayTiles[1].tileY =4;
-		
-		//win Tiles Haz
-		/*winX2 = HazardousT[1].tileX =9;
-		winY2 = HazardousT[1].tileY =9;*/
-		
+				
 		
 		//tileTypes Safe
 		arrayTiles[1].tileType = 2;
@@ -98,12 +94,6 @@ public class GameTest {
 		arrayTiles[2].tileType = 1;
 		arrayTiles[4].tileType = 0;
 		arrayTiles[5].tileType = 0;
-	/*	
-		//tilesTypes Hazardous
-		HazardousT[1].tileType = 1;
-		HazardousT[2].tileType = 0;
-		HazardousT[4].tileType = 2;
-		HazardousT[5].tileType = 1;*/
 		
 		visited = new boolean[numOfPlayers][mapSide * mapSide];
 		
@@ -206,8 +196,12 @@ public class GameTest {
 	@Test
 	public void testGenerateHtml() {
 		System.out.println("testGenerateHTML");
-			
+		int mapSide =5;
+		int playersNum =3;
 		File file = new File("mapPlayerTest");
+		
+		
+		
 		PrintWriter fileCreate = null;
 		try{
 			fileCreate = new PrintWriter(file);
@@ -220,10 +214,5 @@ public class GameTest {
 		assertFalse(new File("testFail").exists());
 	}
 	
-	@Test
-	public void testMovePlayers(){
-		
-		
-	}
-
+	
 }

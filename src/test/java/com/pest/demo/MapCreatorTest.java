@@ -42,7 +42,11 @@ public class MapCreatorTest {
 		MapGeneratorCreator map3 = new MapGeneratorCreator();
 		MapGenerator mapa = map3.createMap(25, 2);
 		
-		assertThat(mapS, is(not(map1)));	
+		MapGeneratorCreator map4 = new MapGeneratorCreator();
+		MapGenerator mapb = map3.createMap(25);
+		
+		assertThat(mapS, is(not(map1)));
+		assertNull(mapb);
 	}
 	
 	@Test
@@ -51,9 +55,13 @@ public class MapCreatorTest {
 		MapGeneratorCreator map1 = map.typeSet(1);
 		MapGeneratorCreator map2 = map.typeSet(2);
 		MapGeneratorCreator map3 = map.typeSet(3);
+		MapGeneratorCreator map4 = map.typeSet(4);
 		
 		assertTrue(map1 instanceof SafeMapCreator);
 		assertTrue(map2 instanceof HazardousMapCreator);
+		assertFalse(map4 instanceof SafeMapCreator);
+		assertFalse(map1 instanceof HazardousMapCreator);
+		assertNull(map4);
 		assertNull(map3);
 		
 	}

@@ -64,6 +64,7 @@ public class GameHazardousMapTest {
 		HazardousT[2].tileType = 2;
 		HazardousT[4].tileType = 1;
 	
+		
 
 	}
 
@@ -72,15 +73,34 @@ public class GameHazardousMapTest {
 	}
 
 	@Test
+	public void testGetMapInstance(){
+		MapGenerator.map = null;
+		HazardousMap.getMapInstance(25);
+		
+		assertTrue(MapGenerator.map instanceof HazardousMap);
+		
+		MapGenerator.map = HazardousMap.getMapInstance(30);
+		HazardousMap.getMapInstance(30);
+		
+		assertTrue(MapGenerator.map instanceof HazardousMap);
+
+	}
+	
+	@Test
 	public void testCheckWater(){
-		//Safe Map
+		
 		assertEquals(1, HazardousT[1].tileType);
-		assertNotEquals(1, HazardousT[3].tileType);
+		assertNotEquals(1, HazardousT[3].tileType);		
+	}
+	
+	@Test
+	public void testTypeSet(){
+		MapGenerator.map= HazardousMap.getMapInstance(25);
+		MapGenerator.map.winTileCreated =true;
+		MapGeneratorCreator m = new MapGeneratorCreator();
+		MapGenerator.map.generateLoop();
 		
-		//Hazardous Map
-		/*assertEquals(1, HazardousT[1].tileType);
-		assertNotEquals(1, HazardousT[4].tileType);*/
-		
+		assertEquals(null, m.typeSet(5));
 	}
 	
 	@Test
