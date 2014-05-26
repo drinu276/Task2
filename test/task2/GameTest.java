@@ -165,16 +165,16 @@ public class GameTest {
 		
 	}
 	
-	@Test
+	/*@Test
 	public void testStartQuestions(){
-		
+		assertEquals(0,	game.startQuestions());
 	}
-	
+	*/
 	@Test
 	public void testSetUpTeams(){
 		Player arrayPlayers[] = null;
-		game.start();
-		game.setUpTeams(2, 4);
+	//	game.start(); 
+	//	game.setUpTeams(2, 4);
 
 		
 		Player [] play = new Player[4];
@@ -212,6 +212,9 @@ public class GameTest {
 	
 	@Test
 	public void testCheckWater(){
+		
+		
+		
 		//Safe Map
 		assertEquals(1, arrayTiles[2].tileType);
 		assertNotEquals(1, arrayTiles[1].tileType);
