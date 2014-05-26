@@ -1,127 +1,122 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package test;
 
-package task2;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-/**
- *
- * @author Andrea
- */
+import task2.Player;
+
 public class PlayerTest {
-    
-    public PlayerTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
 
-    /**
-     * Test of moveUp method, of class Player.
-     */
-    @Test
-    public void testMoveUp() {
-        System.out.println("moveUp");
-        Player instance = new Player();
-        instance.moveUp();        
-    }
+	
+	Player p, p1, p2, p3,p4,p5, p6;
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+	}
 
-    /**
-     * Test of moveDown method, of class Player.
-     */
-    @Test
-    public void testMoveDown() {
-        System.out.println("moveDown");
-        Player instance = new Player();
-        instance.moveDown();       
-    }
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
 
-    /**
-     * Test of moveLeft method, of class Player.
-     */
-    @Test
-    public void testMoveLeft() {
-        System.out.println("moveLeft");
-        Player instance = new Player();
-        instance.moveLeft();        
-    }
+	@Before
+	public void setUp() throws Exception {
+		p = new Player (2,3);
+		p1 = new Player ();
+		p2 = new Player ();
+		p3 = new Player ();
+		p4 = new Player();
+		p5 = new Player();
+		p6 = new Player();
+		
+		p1.setX(4);
+		p1.setY(4);
+		
+		p2.setX(2);
+		p2.setY(3);
+		
+		p3.setX(4);
+		p3.setY(4);
+		
+		p4.setX(1);
+		p4.setY(3);
+		
+		p5.setX(1);
+		p5.setY(4);
+		
+		p6.setX(2);
+		p6.setY(4);
+		
+		p1.setTeam(3);
+		
+		 
+	}
 
-    /**
-     * Test of moveRight method, of class Player.
-     */
-    @Test
-    public void testMoveRight() {
-        System.out.println("moveRight");
-        Player instance = new Player();
-        instance.moveRight();
-    }
+	@After
+	public void tearDown() throws Exception {
+	}
 
-    /**
-     * Test of setX method, of class Player.
-     */
-    @Test
-    public void testSetX() {
-        System.out.println("setX");
-        int a = 0;
-        Player instance = new Player();
-        instance.setX(a);
-    }
+	@Test
+	public void testgetX(){
+		assertEquals(1, p4.getX());
+		assertEquals(2, p2.getX());
+	}
+	
+	@Test
+	public void testgetY(){
+		assertEquals(3, p4.getY());
+		assertNotEquals(2, p3.getY());
+	}
+	
+	@Test
+	public void testSetY(){
+		p5.setY(3);
+		assertEquals(3, p5.getY());
+	}
+	
+	@Test
+	public void testSetX(){
+		p5.setX(1);
+		assertEquals(1, p5.getX());
+	}
+	
+	@Test
+	public void testgetTeam(){
+		assertEquals(3, p1.getTeam());
+	}
+	
+	@Test
+	public void testSetTeam(){
+		p.setTeam(2);
+		assertEquals(2, p.getTeam());
+	}
+	
+	@Test
+	public void testMoveUp(){
+		p1.moveUp();
+		assertEquals(3, p1.getX());
+		assertNotEquals(5, p1.getX());
+	}
+	
+	@Test
+	public void testMoveDown(){
+		p3.moveDown();
+		assertEquals(5, p3.getX());
+	}
+	
+	@Test
+	public void testMoveRight(){
+		p5.moveRight();
+		assertEquals(5, p5.getY());
+	}
+	
+	@Test
+	public void testMoveLeft(){
+		p6.moveLeft();
+		assertEquals(3, p6.getY());
+	}
 
-    /**
-     * Test of setY method, of class Player.
-     */
-    @Test
-    public void testSetY() {
-        System.out.println("setY");
-        int b = 0;
-        Player instance = new Player();
-        instance.setY(b);
-    }
-
-    /**
-     * Test of getX method, of class Player.
-     */
-    @Test
-    public void testGetX() {
-        System.out.println("getX");
-        Player instance = new Player();
-        int expResult = 0;
-        int result = instance.getX();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getY method, of class Player.
-     */
-    @Test
-    public void testGetY() {
-        System.out.println("getY");
-        Player instance = new Player();
-        int expResult = 0;
-        int result = instance.getY();
-        assertEquals(expResult, result);
-    }
-    
 }
