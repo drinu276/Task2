@@ -52,7 +52,9 @@ public class Game {
 			generateHtml(/*arrayPlayers[counter], */counter);
 		}
 
-		outputCurrentPos();
+		
+		outputCurrentPos(arrayPlayers);
+		
 		if (won) {
 			for (int i = 0; i < playersNum; i++) {
 				if (winners[i] == 1) {
@@ -73,7 +75,8 @@ public class Game {
 		visited = new boolean[playersNum][mapSide * mapSide];
 		playerMoves = new char[playersNum];
 		addUncovered();
-		outputCurrentPos();
+		outputCurrentPos(arrayPlayers);
+		
 		for (int counter = 0; counter < playersNum; counter++) {
 			generateHtml(/*arrayPlayers[counter],*/ counter);
 		}
@@ -391,12 +394,13 @@ public class Game {
 		 */
 	}
 
-	public void outputCurrentPos() {
+	public boolean outputCurrentPos(Player arrayPlayers[]) {
 		System.out.println();
 		for (int i = 0; i < playersNum; i++) {
 			System.out.println("Player " + i + " is at coords: y: " + arrayPlayers[i].currentposY + ", x: " + arrayPlayers[i].currentposX);
 		}
 		System.out.println();
+		return true;
 	}
 
 	public void generateHtml(/*Player player,*/int playerNumber) { 

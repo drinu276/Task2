@@ -130,8 +130,7 @@ public class GameTest {
 		assertEquals(2, player2[2].team);
 	}
 	
-	@Test
-	
+	@Test	
 	public void testCheckNumberOfPlayers() {
 		System.out.println("checkNumberOfPlayers");
        
@@ -168,12 +167,16 @@ public class GameTest {
 		
 	}
 	
+	@Test
+	public void testOutputCurrentPos(){
+		assertEquals(true,game.outputCurrentPos(player2));
+	}
 	/*@Test
 	public void testStartQuestions(){
 		assertEquals(0,	game.startQuestions());
 	}
 	*/
-	@Test
+/*	@Test
 	public void testSetUpTeams(){
 		Player arrayPlayers[] = null;
 	//	game.start(); 
@@ -192,7 +195,7 @@ public class GameTest {
 		assertEquals(0, play[0].getTeam());
 		assertEquals(1, play[1].getTeam());
 		
-	}
+	}*/
 	
 	
 	@Test
@@ -238,26 +241,20 @@ public class GameTest {
 		assertEquals(false, visited[0][5]);	
 	}
 	
-	@Test 
-	public void testCreateTileArray(){
-		MapGeneratorCreator map2 = new MapGeneratorCreator();
-		MapGenerator m = map2.createMap(3,2);
-		Tile[] t;
-		t= m.returnArray();
-		
-		assertNotNull(t);		
-	}
 	
 	@Test
 	public void testGenerateHtml() {
 		System.out.println("testGenerateHTML");
+		MapGenerator map2 = SafeMap.getMapInstance(25);
 		game.mapSide= 5;
+		map2.generateLoop();
 		game.visited = new boolean[4][game.mapSide*game.mapSide];
 
 		
 		
 		File file1 = new File ("map_player_0.html");
 		File file2 = new File ("map_player_1.html");
+		File file3 = new File("maps");
 		
 		game.startPositions();;
 		game.generateHtml(2);
@@ -292,6 +289,8 @@ public class GameTest {
 		
 		assertTrue(file1.exists());
 		assertTrue(file2.exists());
+		
+		assertFalse(file3.exists());
 		assertNotSame(file1,file2);
 		
 	}
