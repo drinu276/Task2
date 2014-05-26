@@ -141,12 +141,10 @@ public class GameTest {
 				player3[i]= new Player();
 				player3[i].setTeam(i);
 			}
+			assertEquals(0, player3[0].getTeam());
+			assertEquals(1, player3[1].getTeam());
+			assertNotEquals(1, player3[0].getTeam());
 		}
-			
-		assertEquals(0, player3[0].getTeam());
-		assertEquals(1, player3[1].getTeam());
-		
-		
 	}
 	
 	@Test	
@@ -191,33 +189,28 @@ public class GameTest {
 		assertEquals(true,game.outputCurrentPos(player2));
 	}
 	
-	
-	
-	/*@Test
-	public void testStartQuestions(){
-		assertEquals(0,	game.startQuestions());
-	}*/
-	
-/*	@Test
+	@Test
 	public void testSetUpTeams(){
-		Player arrayPlayers[] = null;
-	//	game.start(); 
-	//	game.setUpTeams(2, 4);
-
+		Player[] arrayPlayers;
+		int playerNum =3;		
+		game.setUpTeams(3,playerNum);		
+		assertEquals(0, game.arrayPlayers[0].getTeam());
+		assertEquals(1, game.arrayPlayers[1].getTeam());
+	}
+	
+	@Test
+	public void testSetUpTeams2(){
+		Player[] arrayPlayers;
+		int playerNum =4;		
+		game.setUpTeams(3,playerNum);		
 		
-		Player [] play = new Player[4];
-		int playNum =0;
+		assertEquals(0, game.arrayPlayers[0].getTeam());
+		assertEquals(1, game.arrayPlayers[1].getTeam());
+		assertEquals(2, game.arrayPlayers[2].getTeam());
+		assertNotSame(game.arrayPlayers[2], game.arrayPlayers[1]);
 		
-		for(int i=0; i < 4; i++){
-			play[playNum] = new Player();
-			play[i].setTeam(i);
-			playNum++;
-		}
-		
-		assertEquals(0, play[0].getTeam());
-		assertEquals(1, play[1].getTeam());
-		
-	}*/
+		assertNotNull(game.arrayPlayers[3].getTeam()); // cant check which team since this is allocated randomely
+	}
 	
 	
 	@Test

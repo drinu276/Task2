@@ -21,7 +21,7 @@ public class Game {
 	public boolean[][] visited;
 	Tile[][] arrayTiles; //Multidimensional array that stores arrays of type Tile, one for each player
 	Tile[] arrayTiles2;
-	Player[] arrayPlayers; //Array of type player that stores current and starting position of each player
+	public Player[] arrayPlayers; //Array of type player that stores current and starting position of each player
 	Random rand = new Random();
 	char gamesType;
 	int teamsNumber;
@@ -183,7 +183,7 @@ public class Game {
 	}
 
 	public void setUpTeams(int numberOfTeams, int numberOfPlayers) {
-
+		arrayPlayers = new Player [numberOfPlayers];
 		int playerNumber = 0;
 		int playersRem = numberOfPlayers - numberOfTeams;
 
