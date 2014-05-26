@@ -37,7 +37,7 @@ public class Game {
 
 	public int loop() {
 		getMoves();
-		movePlayers();
+		//movePlayers();
 		checkWater();
 		addUncovered();
 		winners = checkWin();
@@ -260,31 +260,35 @@ public class Game {
 		for (int i = 0; i < playersNum; i++) {
 			System.out.println("Enter direction of movement, player " + i + ", ((U)p, (D)own, (L)eft or (R)ight) :");
 			playerMoves[i] = sc.next().charAt(0);
+			movePlayers(playerMoves[i], arrayPlayers, i);
+			
 		}
 	}
 
-	public void movePlayers() {
-		for (int i = 0; i < playersNum; i++) {
-			if (playerMoves[i] == 'u' || playerMoves[i] == 'U') {
+	public boolean movePlayers(char playerMoves, Player arrayPlayers[] ,int i) {
+		//for (int i = 0; i < playersNum; i++) {
+			if (playerMoves == 'u' || playerMoves == 'U') {
 				if (arrayPlayers[i].currentposX != 0) {
 					arrayPlayers[i].moveUp();
 				}
-			} else if (playerMoves[i] == 'd' || playerMoves[i] == 'D') {
+			} else if (playerMoves == 'd' || playerMoves == 'D') {
 				if (arrayPlayers[i].currentposX != mapSide - 1) {
 					arrayPlayers[i].moveDown();
 				}
-			} else if (playerMoves[i] == 'l' || playerMoves[i] == 'L') {
+			} else if (playerMoves == 'l' || playerMoves == 'L') {
 				if (arrayPlayers[i].currentposY != 0) {
 					arrayPlayers[i].moveLeft();
 				}
-			} else if (playerMoves[i] == 'r' || playerMoves[i] == 'R') {
+			} else if (playerMoves == 'r' || playerMoves == 'R') {
 				if (arrayPlayers[i].currentposY != mapSide - 1) {
 					arrayPlayers[i].moveRight();
 				}
 			} else {
 				System.out.println("Player " + i + " entered an invalid move.");
+				return false;
 			}
-		}
+		//}
+			return true;
 	}
 
 	int checkWater() {

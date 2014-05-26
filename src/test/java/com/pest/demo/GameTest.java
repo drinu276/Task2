@@ -80,6 +80,9 @@ public class GameTest {
 		player2[2].currentposX = 6;
 		player2[2].currentposY = 7;
 		
+		player2[3].currentposX = 6;
+		player2[3].currentposY = 9;
+		
 		player2[4].currentposX = 9; 
 		player2[4].currentposY = 9;
 		
@@ -192,29 +195,24 @@ public class GameTest {
 	}
 	
 	
-/*	@SuppressWarnings("null")
 	@Test
 	public void testMovePlayers(){
-		char[] playerMoves = null;
-		playerMoves = new char[5];
-		playerMoves[0] ='g'; //fails
-		playerMoves[1] = 'u';
-		playerMoves[2] = 'd';
-		playerMoves[3] = 'l';
-		playerMoves[4] = 'r';
+		//passes
+		assertEquals(true, game.movePlayers('u', player2, 1));
+		assertEquals(true, game.movePlayers('d', player2, 2));
+		assertEquals(true, game.movePlayers('r', player2, 4));
+		assertEquals(true, game.movePlayers('l', player2, 3)); 
+		assertEquals(true, game.movePlayers('R', player2, 1));
+		//fail
+		assertEquals(false, game.movePlayers('g', player2, 3));
+		assertEquals(false, game.movePlayers('f', player2, 4));
+
 		
-		player[1].moveUp();
-		
-		
-		
-		
-	}*/
+	}
 	
 	@Test
 	public void testCheckWater(){
-		
-		
-		
+	
 		//Safe Map
 		assertEquals(1, arrayTiles[2].tileType);
 		assertNotEquals(1, arrayTiles[1].tileType);
