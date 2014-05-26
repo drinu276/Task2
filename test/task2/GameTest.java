@@ -251,22 +251,49 @@ public class GameTest {
 	@Test
 	public void testGenerateHtml() {
 		System.out.println("testGenerateHTML");
-		int mapSide =5;
-		int playersNum =3;
-		File file = new File("mapPlayerTest");
+		game.mapSide= 5;
+		game.visited = new boolean[4][game.mapSide*game.mapSide];
+
 		
 		
+		File file1 = new File ("map_player_0.html");
+		File file2 = new File ("map_player_1.html");
 		
-		PrintWriter fileCreate = null;
-		try{
-			fileCreate = new PrintWriter(file);
-		}catch(Exception e){
-			
+		game.startPositions();;
+		game.generateHtml(2);
+		
+		
+		for(int i=0; i<game.mapSide;i++){
+			for(int j=0; j<game.mapSide;j++){
+				if(arrayTiles[game.mapSide*i+j].tileType==1){
+					player[2].setX(i);
+					player[2].setY(j);
+					visited[2][game.mapSide*i+j] =true;
+				}
+			}
 		}
+				
+		game.generateHtml(0);
 		
-		assertEquals(arrayTiles[4].tileType, 0);
-		assertTrue(new File("mapPlayerTest").exists());	
-		assertFalse(new File("testFail").exists());
+		for(int i=0; i<game.mapSide;i++){
+			for(int j=0; j<game.mapSide;j++){
+				if(arrayTiles[game.mapSide*i+j].tileType==2){
+					player[0].setX(i);
+					player[0].setY(j);
+					visited[0][game.mapSide*i+j] =true;
+				}
+			}
+		}
+
+		
+		game.generateHtml(1);
+		
+		
+		
+		assertTrue(file1.exists());
+		assertTrue(file2.exists());
+		assertNotSame(file1,file2);
+		
 	}
 	
 	

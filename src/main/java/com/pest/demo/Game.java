@@ -14,11 +14,11 @@ public class Game {
 	boolean teams = false;
 	int turn; //Holds turn number
 	int playersNum; //Holds number of players playing
-	int mapSide; //Holds length of side of map
+	public int mapSide; //Holds length of side of map
 	int mapsType; //chooses the type of map that the player wants
 	int[] winners;
 	char[] playerMoves; //Array that stores player
-	boolean[][] visited;
+	public boolean[][] visited;
 	Tile[][] arrayTiles; //Multidimensional array that stores arrays of type Tile, one for each player
 	Tile[] arrayTiles2;
 	Player[] arrayPlayers; //Array of type player that stores current and starting position of each player
@@ -49,7 +49,7 @@ public class Game {
 		}
 
 		for (int counter = 0; counter < playersNum; counter++) {
-			generateHtml(arrayPlayers[counter], counter);
+			generateHtml(/*arrayPlayers[counter], */counter);
 		}
 
 		outputCurrentPos();
@@ -75,7 +75,7 @@ public class Game {
 		addUncovered();
 		outputCurrentPos();
 		for (int counter = 0; counter < playersNum; counter++) {
-			generateHtml(arrayPlayers[counter], counter);
+			generateHtml(/*arrayPlayers[counter],*/ counter);
 		}
 		System.out.println("\nGame Start\n");
 		loop();
@@ -217,10 +217,11 @@ public class Game {
 		}
 	}
 
-	public void createTilesArray() {
+	public int createTilesArray() {
 		MapGeneratorCreator mg = new MapGeneratorCreator();
 		MapGenerator a = mg.createMap(mapSide, mapsType);
 		arrayTiles2 = a.returnArray();
+		return 0;
 	}
 
 	public void startPositions() {
@@ -398,7 +399,7 @@ public class Game {
 		System.out.println();
 	}
 
-	public void generateHtml(Player player, int playerNumber) { 
+	public void generateHtml(/*Player player,*/int playerNumber) { 
 
 		PrintWriter fileCreate = null;
 		try {
@@ -420,9 +421,9 @@ public class Game {
 				if (visited[playerNumber][mapSide * i + j] == false) {
 					fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/hiddenTile.jpg \">"); //if player position agrees with current axis then player position image
 				} else if (visited[playerNumber][mapSide * i + j] == true) {
-					if (((player.getX() == (i)) && (player.getY() == (j))) && (arrayTiles2[mapSide * i + j].tileType == 2) == true) {
+					if (((arrayPlayers[playerNumber].getX() == (i)) && (arrayPlayers[playerNumber].getY() == (j))) && (arrayTiles2[mapSide * i + j].tileType == 2) == true) {
 						fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/winTile.jpg \">"); //win
-					} else if ((player.getX() == (i)) && (player.getY() == (j))) {
+					} else if ((arrayPlayers[playerNumber].getX() == (i)) && (arrayPlayers[playerNumber].getY() == (j))) {
 						fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/pirateTile.jpg \">"); //if player position agrees with current axis then player position image
 					} else if (arrayTiles2[mapSide * i + j].tileType == 0) {
 						fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/grassTile.jpg \">"); //grass
