@@ -24,7 +24,6 @@ public class MapCreatorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		int numberOfPlayers = 3;
 		
 	}
 
