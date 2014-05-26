@@ -15,7 +15,7 @@ public class Game {
 	int turn; //Holds turn number
 	int playersNum; //Holds number of players playing
 	public int mapSide; //Holds length of side of map
-	int mapsType; //chooses the type of map that the player wants
+	public int mapsType; //chooses the type of map that the player wants
 	int[] winners;
 	char[] playerMoves; //Array that stores player
 	public boolean[][] visited;
@@ -216,6 +216,7 @@ public class Game {
 	}
 
 	public int createTilesArray() {
+		
 		MapGeneratorCreator mg = new MapGeneratorCreator();
 		MapGenerator a = mg.createMap(mapSide, mapsType);
 		arrayTiles2 = a.returnArray();
@@ -290,7 +291,7 @@ public class Game {
 			return true;
 	}
 
-	int checkWater() {
+	public int checkWater() {
 		for (int i = 0; i < arrayTiles2.length; i++) {
 			for (int j = 0; j < playersNum; j++) {
 				if (arrayTiles2[i].tileType == 1) {

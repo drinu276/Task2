@@ -187,6 +187,8 @@ public class GameTest {
 	@Test
 	public void testOutputCurrentPos(){
 		assertEquals(true,game.outputCurrentPos(player2));
+		assertEquals(true, game.outputCurrentPos(player));
+		
 	}
 	
 	@Test
@@ -197,7 +199,7 @@ public class GameTest {
 		assertEquals(0, game.arrayPlayers[0].getTeam());
 		assertEquals(1, game.arrayPlayers[1].getTeam());
 	}
-	
+
 	@Test
 	public void testSetUpTeams2(){
 		Player[] arrayPlayers;
@@ -211,8 +213,7 @@ public class GameTest {
 		
 		assertNotNull(game.arrayPlayers[3].getTeam()); // cant check which team since this is allocated randomely
 	}
-	
-	
+		
 	@Test
 	public void testMovePlayers(){
 		//passes
@@ -224,17 +225,36 @@ public class GameTest {
 		//fail
 		assertEquals(false, game.movePlayers('g', player2, 3));
 		assertEquals(false, game.movePlayers('f', player2, 4));
-
+	}
+	
+	public void testcreateTilesArray(){
+		MapGeneratorCreator map2 = new MapGeneratorCreator();
+		MapGenerator a = map2.createMap(game.mapSide, game.mapsType);
+		a.returnArray();
+		game.createTilesArray();
+		assertNotNull(game.createTilesArray());
 		
 	}
 	
-	@Test
+	/*@Test
 	public void testCheckWater(){
-	
+		game.mapSide = 5;
+		game.mapsType=2;
+		MapGeneratorCreator map2 = new MapGeneratorCreator();
+		MapGenerator a = map2.createMap(game.mapSide, game.mapsType);
+		a.returnArray();
+		Tile[] arrayTiles2; 
+		game.createTilesArray();
+		//map2.returnArray();
+		
+		
+		
+		game.checkWater();
+		
 		//Safe Map
 		assertEquals(1, arrayTiles[2].tileType);
 		assertNotEquals(1, arrayTiles[1].tileType);
-	}
+	}*/
 	
 	@Test
 	public void testCheckWin(){
