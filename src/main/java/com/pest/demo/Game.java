@@ -40,7 +40,7 @@ public class Game {
 		//movePlayers();
 		checkWater();
 		addUncovered();
-		winners = checkWin();
+		winners = checkWin(arrayTiles2, arrayPlayers, playersNum);
 		for (int i = 0; i < playersNum; i++) {
 			if (winners[i] == 1) {
 				won = true;
@@ -313,7 +313,7 @@ public class Game {
 		return 0;
 	}
 
-	public int[] checkWin() {
+	public int[] checkWin(Tile[] arrayTiles2, Player[] arrayPlayers, int playersNum) {
 		int winX = 0, winY = 0;
 		int[] winPlayers = new int[playersNum];
 

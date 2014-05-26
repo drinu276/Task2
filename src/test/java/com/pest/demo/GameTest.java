@@ -43,7 +43,7 @@ public class GameTest {
 
 	@Before
 	public void setUp() throws Exception {
-		int numOfPlayers = 5;
+		int numOfPlayers = 7;
 		int mapSide = 5;
 		game = new Game();
 		map = SafeMap.getMapInstance(5);
@@ -74,6 +74,8 @@ public class GameTest {
 		player2[2] = new Player();
 		player2[3] = new Player();
 		player2[4] = new Player();
+		player2[5] = new Player();
+		player2[6] = new Player();
 		
 		player2[0].currentposX =1;
 		player2[0].currentposY =2; 
@@ -89,6 +91,12 @@ public class GameTest {
 		
 		player2[4].currentposX = 9; 
 		player2[4].currentposY = 9;
+		
+		player2[5].currentposX = 3;//winner
+		player2[5].currentposY = 4;
+		
+		player2[6].currentposX = 3;//winner
+		player2[6].currentposY = 4;
 		
 		player2[2].team =2; //no teams
 		
@@ -236,6 +244,19 @@ public class GameTest {
 		
 	}
 	
+	@Test
+	public void testStartPositions(){
+		game.mapSide = 5; 
+		game.mapsType = 1;
+		Tile[] arrayTiles2;
+		MapGeneratorCreator map2 = new MapGeneratorCreator();
+		MapGenerator a = map2.createMap(game.mapSide, game.mapsType);
+		arrayTiles2 = a.returnArray();
+		
+		game.startPositions();
+		
+	}
+	
 	/*@Test
 	public void testCheckWater(){
 		game.mapSide = 5;
@@ -258,6 +279,32 @@ public class GameTest {
 	
 	@Test
 	public void testCheckWin(){
+		int[] winners = new int[2];
+		//winners[0] = 1;
+		
+		for (int i = 0; i < arrayTiles.length; i++) {
+			if (arrayTiles[i].tileType == 2) {
+				winX = arrayTiles[i].tileX;
+				winY = arrayTiles[i].tileY;
+				assertEquals(2, arrayTiles[i].tileType);				
+				System.out.println(winX);
+			}
+		}
+		
+		for (int i = 0; i<winners.length; i++){
+			if(player[i].currentposX == winX && player[i].currentposY == winY) {
+				assertEquals(winX, player[i].currentposX);
+				assertEquals(winY, player[i].currentposY);
+				winners[i] = 1;
+			}
+		}
+		
+		
+		game.checkWin(arrayTiles, player,2);
+		assertEquals(winners.length, game.checkWin(arrayTiles, player,2).length);
+		assertEquals(winners[0], game.checkWin(arrayTiles, player, 2)[0]);
+		//assertNotEquals(winners[1], game.checkWin(arrayTiles, player,2)[1]);
+		
 		//Safe Map
 		assertEquals(2, arrayTiles[1].tileType);
 		assertEquals(winX,player[1].currentposX );
