@@ -1,4 +1,5 @@
 package test;
+
 import task2.Player;
 import task2.Game;
 import task2.Tile;
@@ -17,6 +18,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
+import org.junit.*;
+
+
 
 public class GameTest {
 	
@@ -122,10 +126,10 @@ public class GameTest {
 	public void testGameType(){
 		
 		assertEquals(false, game.gameType('L')); //LETTER does not exist
-		//assertEquals(true, game.gameType('Y'));
+		assertEquals(true, game.gameType('Y'));
 		assertEquals(true, game.gameType('N'));
 		assertEquals(true, game.gameType('n'));
-		//assertEquals(true, game.gameType('y'));
+		assertEquals(true, game.gameType('y'));
 		
 		assertEquals(2, player2[2].team);
 	}
@@ -171,11 +175,14 @@ public class GameTest {
 	public void testOutputCurrentPos(){
 		assertEquals(true,game.outputCurrentPos(player2));
 	}
+	
+	
+	
 	/*@Test
 	public void testStartQuestions(){
 		assertEquals(0,	game.startQuestions());
-	}
-	*/
+	}*/
+	
 /*	@Test
 	public void testSetUpTeams(){
 		Player arrayPlayers[] = null;
@@ -241,7 +248,7 @@ public class GameTest {
 		assertEquals(false, visited[0][5]);	
 	}
 	
-	
+		
 	@Test
 	public void testGenerateHtml() {
 		System.out.println("testGenerateHTML");
@@ -249,8 +256,6 @@ public class GameTest {
 		game.mapSide= 5;
 		map2.generateLoop();
 		game.visited = new boolean[4][game.mapSide*game.mapSide];
-
-		
 		
 		File file1 = new File ("map_player_0.html");
 		File file2 = new File ("map_player_1.html");

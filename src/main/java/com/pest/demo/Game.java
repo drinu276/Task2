@@ -50,9 +50,7 @@ public class Game {
 
 		for (int counter = 0; counter < playersNum; counter++) {
 			generateHtml(/*arrayPlayers[counter], */counter);
-		}
-
-		
+		}	
 		outputCurrentPos(arrayPlayers);
 		
 		if (won) {
@@ -109,6 +107,13 @@ public class Game {
 			gamesType = sc.next().charAt(0);
 			System.out.println();
 		}
+		
+			System.out.println("How many teams will be playing? (There can not be more players than teams)");
+			teamsNumber = sc.nextInt();
+			System.out.println();
+			if (checkNumberOfTeams(teamsNumber, playersNum)) {
+				setUpTeams(teamsNumber, playersNum);
+			}
 		return 0;
 	}
 
@@ -126,7 +131,7 @@ public class Game {
 	}
 
 	public boolean gameType(char gameType) {
-		boolean done = false;
+		//boolean done = false;
 		if (gameType == 'N' || gameType == 'n') {
 			for (int i = 0; i < playersNum; i++) {
 				arrayPlayers[i] = new Player();
@@ -134,16 +139,6 @@ public class Game {
 			}
 			return true;
 		} else if (gameType == 'Y' || gameType == 'y') {
-
-			while (!done) {
-				System.out.println("How many teams will be playing? (There can not be more players than teams)");
-				teamsNumber = sc.nextInt();
-				System.out.println();
-				if (checkNumberOfTeams(teamsNumber, playersNum)) {
-					done = true;
-					setUpTeams(teamsNumber, playersNum);
-				}
-			}
 			return true;
 		} else {
 			return false;
