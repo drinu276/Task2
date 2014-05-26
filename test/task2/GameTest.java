@@ -106,7 +106,7 @@ public class GameTest {
 		
 		waterX = arrayTiles[3].tileX =2;
 		waterY = arrayTiles[3].tileY =2;
-		
+				
 		arrayTiles[1].tileType = 2;
 		arrayTiles[3].tileType = 1;
 		arrayTiles[2].tileType = 1;
@@ -339,10 +339,12 @@ public class GameTest {
 					
 						
 						int currTeam = player2[j].getTeam();
+					
 						for (int k = 0; k < playersNum; k++) {
 							if (player2[k].getTeam() == currTeam) {
 								assertEquals(currTeam, player2[k].getTeam());
 								visited[k][i] = true;
+								assertEquals(true,visited[k][i]);
 							}
 						}
 						System.out.println("Player " + j + " you have fallen in the water");
@@ -354,8 +356,8 @@ public class GameTest {
 		}
 		
 		game.checkWater(arrayTiles, player2, 4);
-		assertEquals(0, game.checkWater(arrayTiles, player2, 4));
-		
+		assertEquals(0, game.checkWater(arrayTiles, player2, 4));	
+		assertEquals(visited[1][1], game.visited[1][1]);	
 		
 	}
 	
@@ -363,6 +365,40 @@ public class GameTest {
 	@Test
 	public void testAddUncovered(){
 		System.out.println("testAddUncovered");
+		int playersNum = 2;
+		game.mapSide = 5;
+		
+		player2[1].startposX =2;
+		player2[1].startposY =1;
+		
+		game.visited = new boolean[4][game.mapSide*game.mapSide];
+/*
+		for (int i = 0; i < playersNum; i++) {
+			assertNotEquals(i,playersNum);
+			
+			for (int j = 0; j < arrayTiles.length; j++) {
+				if ((arrayTiles[j].tileX == player[i].startposX) && (arrayTiles[j].tileY == player[i].startposY)) {
+					assertEquals(arrayTiles[i].tileX, player2[i].startposX);
+					assertEquals(arrayTiles[i].tileY, player2[i].startposY);
+					
+					int currTeam = player[i].getTeam();
+					for (int k = 0; k < playersNum; k++) {
+						assertEquals(currTeam, player2[k].getTeam());
+
+						if (player[k].getTeam() == currTeam) {
+							visited[k][j] = true;
+							assertEquals(true,visited[k][i]);
+
+						}
+					}
+				}
+			}
+		}
+		*/
+		
+		game.addUncovered(arrayTiles, player2, 2);
+		//assertEquals(visited[1][1], game.visited[1][1]);
+		
 		
 		assertEquals(1 ,player[1].getTeam());
 		assertEquals(0, player[3].getTeam());
