@@ -2,8 +2,8 @@ package task2;
 
 public class Player {
 
-    int startposX;
-    int startposY;
+    public int startposX;
+    public int startposY;
     public int currentposX;
     public int currentposY;
     public int team;

@@ -18,6 +18,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
+
 import org.junit.*;
 
 
@@ -31,7 +32,7 @@ public class GameTest {
 	Player [] player2;
 	boolean[][] visited ;
 	int winX, winY  =0;
-	
+	int waterX, waterY =0;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -95,14 +96,16 @@ public class GameTest {
 		player2[5].currentposX = 3;//winner
 		player2[5].currentposY = 4;
 		
-		player2[6].currentposX = 3;//winner
-		player2[6].currentposY = 4;
+		player2[6].currentposX = 2;//water
+		player2[6].currentposY = 2;
 		
 		player2[2].team =2; //no teams
 		
 		winX = arrayTiles[1].tileX =3;
 		winY = arrayTiles[1].tileY =4;
-				
+		
+		waterX = arrayTiles[3].tileX =2;
+		waterY = arrayTiles[3].tileY =2;
 		
 		arrayTiles[1].tileType = 2;
 		arrayTiles[3].tileType = 1;
@@ -199,13 +202,48 @@ public class GameTest {
 		
 	}
 	
+	@SuppressWarnings("null")
 	@Test
 	public void testSetUpTeams(){
-		Player[] arrayPlayers;
-		int playerNum =3;		
+		int playerNum =3;	
+		int playerCount =0;
+		int numberOfTeams=3;
+		int playersRem =playerNum - numberOfTeams;
+		Player[] arrayPlayers = new Player[playerNum];
+
 		game.setUpTeams(3,playerNum);		
 		assertEquals(0, game.arrayPlayers[0].getTeam());
 		assertEquals(1, game.arrayPlayers[1].getTeam());
+		
+		/*for (int i = 0; i < numberOfTeams; i++) { //place the first n players in the first n teams
+			arrayPlayers[playerCount] = new Player();
+			arrayPlayers[i].setTeam(i);
+			assertEquals(i, game.arrayPlayers[i].getTeam());
+			playerCount++;
+		}
+		if (playersRem > numberOfTeams) {
+			for (int i = 0; i < numberOfTeams; i++) {
+				arrayPlayers[playerCount] = new Player();
+				arrayPlayers[playerCount].setTeam(i);
+				
+				assertEquals(i,arrayPlayers[playerCount].getTeam());
+				
+				playerCount++;
+				playersRem--;
+			}
+		} else {
+			for (int i = 0; i < playersRem; i++) {
+				arrayPlayers[playerCount] = new Player();
+				arrayPlayers[playerCount].setTeam(i);
+				
+				assertEquals(i,arrayPlayers[playerCount].getTeam());
+
+				playerCount++;
+				playersRem--;
+			}
+		}
+		*/
+		
 	}
 
 	@Test
@@ -256,27 +294,7 @@ public class GameTest {
 		game.startPositions();
 		
 	}
-	
-	/*@Test
-	public void testCheckWater(){
-		game.mapSide = 5;
-		game.mapsType=2;
-		MapGeneratorCreator map2 = new MapGeneratorCreator();
-		MapGenerator a = map2.createMap(game.mapSide, game.mapsType);
-		a.returnArray();
-		Tile[] arrayTiles2; 
-		game.createTilesArray();
-		//map2.returnArray();
 		
-		
-		
-		game.checkWater();
-		
-		//Safe Map
-		assertEquals(1, arrayTiles[2].tileType);
-		assertNotEquals(1, arrayTiles[1].tileType);
-	}*/
-	
 	@Test
 	public void testCheckWin(){
 		int[] winners = new int[2];
@@ -299,17 +317,48 @@ public class GameTest {
 			}
 		}
 		
-		
 		game.checkWin(arrayTiles, player,2);
 		assertEquals(winners.length, game.checkWin(arrayTiles, player,2).length);
-		assertEquals(winners[0], game.checkWin(arrayTiles, player, 2)[0]);
-		//assertNotEquals(winners[1], game.checkWin(arrayTiles, player,2)[1]);
-		
-		//Safe Map
-		assertEquals(2, arrayTiles[1].tileType);
-		assertEquals(winX,player[1].currentposX );
-		assertEquals(winY, player[1].currentposY);
+		assertEquals(winners[0], game.checkWin(arrayTiles, player, 2)[0]);		
 	}
+	
+	@Test
+	public void testCheckWater(){
+		game.mapSide =5;
+		int playersNum = 4;
+		game.visited = new boolean[4][game.mapSide*game.mapSide];
+		
+		for (int i = 0; i < arrayTiles.length; i++) {
+			for (int j = 0; j < playersNum; j++) {
+				if (arrayTiles[i].tileType == 1) {
+					assertEquals(1, arrayTiles[i].tileType);				
+					
+					if ((player2[j].currentposX == arrayTiles[i].tileX) && (player2[j].currentposY == arrayTiles[i].tileY)) {
+						assertEquals(arrayTiles[i].tileX, player2[i].currentposX);
+						assertEquals(arrayTiles[i].tileY, player2[i].currentposY);
+					
+						
+						int currTeam = player2[j].getTeam();
+						for (int k = 0; k < playersNum; k++) {
+							if (player2[k].getTeam() == currTeam) {
+								assertEquals(currTeam, player2[k].getTeam());
+								visited[k][i] = true;
+							}
+						}
+						System.out.println("Player " + j + " you have fallen in the water");
+						player2[j].currentposX = player2[j].startposX;
+						player2[j].currentposY = player2[j].startposY;
+					}
+				}
+			}
+		}
+		
+		game.checkWater(arrayTiles, player2, 4);
+		assertEquals(0, game.checkWater(arrayTiles, player2, 4));
+		
+		
+	}
+	
 	
 	@Test
 	public void testAddUncovered(){

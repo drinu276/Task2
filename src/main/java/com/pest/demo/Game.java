@@ -38,7 +38,7 @@ public class Game {
 	public int loop() {
 		getMoves();
 		//movePlayers();
-		checkWater();
+		checkWater(arrayTiles2, arrayPlayers, playersNum);
 		addUncovered();
 		winners = checkWin(arrayTiles2, arrayPlayers, playersNum);
 		for (int i = 0; i < playersNum; i++) {
@@ -291,7 +291,7 @@ public class Game {
 			return true;
 	}
 
-	public int checkWater() {
+	public int checkWater(Tile[] arrayTiles2, Player[] arrayPlayers, int playersNum) {
 		for (int i = 0; i < arrayTiles2.length; i++) {
 			for (int j = 0; j < playersNum; j++) {
 				if (arrayTiles2[i].tileType == 1) {
