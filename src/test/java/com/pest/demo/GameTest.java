@@ -131,7 +131,22 @@ public class GameTest {
 		assertEquals(true, game.gameType('n'));
 		assertEquals(true, game.gameType('y'));
 		
-		assertEquals(2, player2[2].team);
+		int playerNum=2;
+		Player[] player3;
+		player3 = new Player [playerNum];
+		game.gameType('N');
+		
+		if(game.gameType('N')|| game.gameType('n')){
+			for(int i=0; i<playerNum; i++){
+				player3[i]= new Player();
+				player3[i].setTeam(i);
+			}
+		}
+			
+		assertEquals(0, player3[0].getTeam());
+		assertEquals(1, player3[1].getTeam());
+		
+		
 	}
 	
 	@Test	
