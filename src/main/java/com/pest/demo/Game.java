@@ -39,7 +39,7 @@ public class Game {
 		getMoves();
 		//movePlayers();
 		checkWater(arrayTiles2, arrayPlayers, playersNum);
-		addUncovered();
+		addUncovered(arrayTiles2, arrayPlayers, playersNum);
 		winners = checkWin(arrayTiles2, arrayPlayers, playersNum);
 		for (int i = 0; i < playersNum; i++) {
 			if (winners[i] == 1) {
@@ -72,7 +72,7 @@ public class Game {
 		startPositions();
 		visited = new boolean[playersNum][mapSide * mapSide];
 		playerMoves = new char[playersNum];
-		addUncovered();
+		addUncovered(arrayTiles2, arrayPlayers, playersNum);
 		outputCurrentPos(arrayPlayers);
 		
 		for (int counter = 0; counter < playersNum; counter++) {
@@ -336,7 +336,7 @@ public class Game {
 		return winPlayers;
 	}
 
-	public void addUncovered() {
+	public void addUncovered(Tile[] arrayTiles2, Player[] arrayPlayers, int playersNum) {
 		if (first) {
 			first = false;
 			for (int i = 0; i < playersNum; i++) {
