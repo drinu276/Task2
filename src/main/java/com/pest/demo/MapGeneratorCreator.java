@@ -22,7 +22,6 @@ public class MapGeneratorCreator {
         } else if (type == 2) {
             return new HazardousMapCreator(); 
         } else {
-
             return null;
         }
     }

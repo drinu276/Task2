@@ -220,7 +220,6 @@ public class Game {
 	public void createTilesArray() {
 		MapGeneratorCreator mg = new MapGeneratorCreator();
 		MapGenerator a = mg.createMap(mapSide, mapsType);
-		//a.displayLoop(); //TODO REMOVE
 		arrayTiles2 = a.returnArray();
 	}
 
@@ -395,7 +394,7 @@ public class Game {
 		System.out.println();
 	}
 
-	public void generateHtml(Player player, int playerNumber) { //TODO change input to just counter
+	public void generateHtml(Player player, int playerNumber) { 
 
 		PrintWriter fileCreate = null;
 		try {
