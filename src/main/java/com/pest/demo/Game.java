@@ -1,47 +1,84 @@
 package task2;
+/*
+ import java.util.Scanner;
+ import java.util.Random;*/
 
-import java.util.Scanner;
-import java.util.Random;
 import java.io.*; // imported to use PrintWriter 
-
+import java.util.*;
 
 public class Game {
 
-	Random rand = new Random();
 	Scanner sc = new Scanner(System.in); //Used for player input
-	int playersNum; //Number of players
-	int mapSide; // size of map side
-	int mapsType;  // holds type of map (Safe -1 / Hazardous -2 )
-	int turn; //Holds turn number
-
-
 	boolean won = false; //Controls ending of game
 	boolean first = true; //Used to control what is run first time only
-
+	boolean teams = false;
+	int turn; //Holds turn number
+	int playersNum; //Holds number of players playing
+	int mapSide; //Holds length of side of map
+	int mapsType; //chooses the type of map that the player wants
 	int[] winners;
 	char[] playerMoves; //Array that stores player
-	//TODO REMOVED
+	boolean[][] visited;
 	Tile[][] arrayTiles; //Multidimensional array that stores arrays of type Tile, one for each player
+	Tile[] arrayTiles2;
 	Player[] arrayPlayers; //Array of type player that stores current and starting position of each player
+	Random rand = new Random();
+	char gamesType;
+	int teamsNumber;
 
 	public Game() {
 		turn = 1;
 		playersNum = 0;
 		mapSide = 0;
+		mapsType = 0;
+		teamsNumber = 0;
+
+	}
+
+	public int loop() {
+		getMoves();
+		movePlayers();
+		checkWater();
+		addUncovered();
+		winners = checkWin();
+		for (int i = 0; i < playersNum; i++) {
+			if (winners[i] == 1) {
+				won = true;
+				System.out.println("Player " + i + " won");
+			}
+		}
+
+		for (int counter = 0; counter < playersNum; counter++) {
+			generateHtml(arrayPlayers[counter], counter);
+		}
+
+		outputCurrentPos();
+		if (won) {
+			for (int i = 0; i < playersNum; i++) {
+				if (winners[i] == 1) {
+					System.out.println("Game over. Player " + i + " won, in turn " + turn);
+				}
+			}
+		} else {
+			turn++;
+			loop();
+		}
+		return 0;
 	}
 
 	public int start() {
 		startQuestions();
-		arrayPlayers = new Player[playersNum]; // array of size number of Players
+		createTilesArray();
 		startPositions();
+		visited = new boolean[playersNum][mapSide * mapSide];
+		playerMoves = new char[playersNum];
 		addUncovered();
-		/*playerMoves = new char[playersNum];
 		outputCurrentPos();
 		for (int counter = 0; counter < playersNum; counter++) {
-			//generateHtml(arrayPlayers[counter], arrayTiles, counter);
+			generateHtml(arrayPlayers[counter], counter);
 		}
 		System.out.println("\nGame Start\n");
-		loop();*/
+		loop();
 		return 0;
 	}
 
@@ -49,6 +86,7 @@ public class Game {
 		while (checkNumberOfPlayers(playersNum) == false) {
 			System.out.println("How many players will be playing? (2 to 8 players)\n");
 			playersNum = sc.nextInt();
+			arrayPlayers = new Player[playersNum];
 			System.out.println();
 		}
 
@@ -57,30 +95,59 @@ public class Game {
 			System.out.println();
 		}
 
-		while (mapType(mapsType) ==0){
-			System.out.println("Would you like to have a Safe map (1) or a hazardous map (2)? "); 
-			mapsType =sc.nextInt();
+		while (mapType(mapsType) == 0) {
+			System.out.println("Would you like to have a Safe map (1) or a hazardous map (2)? ");
+			mapsType = sc.nextInt();
 			System.out.println();
-			createTilesArray();
+		}
 
-		} 
-
+		while (gameType(gamesType) == false) {
+			System.out.println("Would you like to play in collaborative mode (Team Mode)? (Y/y or N/n)");
+			gamesType = sc.next().charAt(0);
+			System.out.println();
+		}
 		return 0;
 	}
 
-	int mapType(int mapsType){
-		if(mapsType ==1){
-			return 1;
+	public boolean checkNumberOfTeams(int teamNum, int playNum) {
+		if (teamNum > playNum) {
+			System.out.println("Too many Teams");
+			return false;
+		} else {
+			teamsNumber = teamNum;
+			System.out.println("Number of Teams: " + teamsNumber);
+			System.out.println("Number of Players:  " + playersNum);
+			System.out.println();
+			return true;
 		}
-		else if  (mapsType ==2) {
-			return 2;
-		}
-		else {
-			return 0;
-		}    	
 	}
-	//checks that the number of players are valid
-	boolean checkNumberOfPlayers(int playNum) {
+
+	public boolean gameType(char gameType) {
+		boolean done = false;
+		if (gameType == 'N' || gameType == 'n') {
+			for (int i = 0; i < playersNum; i++) {
+				arrayPlayers[i] = new Player();
+				arrayPlayers[i].setTeam(i);
+			}
+			return true;
+		} else if (gameType == 'Y' || gameType == 'y') {
+
+			while (!done) {
+				System.out.println("How many teams will be playing? (There can not be more players than teams)");
+				teamsNumber = sc.nextInt();
+				System.out.println();
+				if (checkNumberOfTeams(teamsNumber, playersNum)) {
+					done = true;
+					setUpTeams(teamsNumber, playersNum);
+				}
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean checkNumberOfPlayers(int playNum) {
 		if (playNum > 8 || playNum < 2) {
 			return false;
 		} else {
@@ -89,8 +156,7 @@ public class Game {
 		}
 	}
 
-	// checks that the mapSize is valid
-	boolean checkMapSize(int playersNum, int mapSide) {
+	public boolean checkMapSize(int playersNum, int mapSide) {
 		if (playersNum >= 2 && playersNum <= 4) {
 			if (mapSide > 50 || mapSide < 5) {
 				System.out.println("What size will the edge of the map be? (5 to 50 tiles)\n");
@@ -108,114 +174,132 @@ public class Game {
 		}
 	}
 
-	int loop() {
-		getMoves();
-		//movePlayers();
-		//checkWater();
-		addUncovered();
-		winners = checkWin();
-		for (int i = 0; i < playersNum; i++) {
-			if (winners[i] == 1) {
-				won = true;
-				System.out.println("Player " + i + " won");
-			}
-		}
-
-		for (int counter = 0; counter < playersNum; counter++) {
-			//generateHtml(arrayPlayers[counter], arrayTiles, counter);
-		}
-
-		outputCurrentPos();
-		if (won) {
-			for (int i = 0; i < playersNum; i++) {
-				if (winners[i] == 1) {
-					System.out.println("Game over. Player " + i + " won, in turn " + turn);
-				}
-			}
+	public int mapType(int mapsType) {
+		if (mapsType == 1) {
+			return 1;
+		} else if (mapsType == 2) {
+			return 2;
 		} else {
-			turn++;
-			loop();
+			return 0;
 		}
-		return 0;
 	}
 
+	public void setUpTeams(int numberOfTeams, int numberOfPlayers) {
 
-	void createTilesArray() {
+		int playerNumber = 0;
+		int playersRem = numberOfPlayers - numberOfTeams;
+
+		for (int i = 0; i < numberOfTeams; i++) { //place the first n players in the first n teams
+			arrayPlayers[playerNumber] = new Player();
+			arrayPlayers[i].setTeam(i);
+			playerNumber++;
+		}
+
+		while (playersRem > 0) {
+
+			if (playersRem > numberOfTeams) {
+				for (int i = 0; i < numberOfTeams; i++) {
+					arrayPlayers[playerNumber] = new Player();
+					arrayPlayers[playerNumber].setTeam(i);
+					playerNumber++;
+					playersRem--;
+				}
+			} else {
+				for (int i = 0; i < playersRem; i++) {
+					arrayPlayers[playerNumber] = new Player();
+					arrayPlayers[playerNumber].setTeam(i);
+					playerNumber++;
+					playersRem--;
+				}
+			}
+		}        for(int i =0 ; i < arrayPlayers.length; i++){
+			System.out.println("Player " + i + "is in Team " + arrayPlayers[i].getTeam());
+		}
+	}
+
+	public void createTilesArray() {
 		MapGeneratorCreator mg = new MapGeneratorCreator();
-		mg.createMap(mapSide, mapsType);
-
-		/*arrayTiles = new Tile[playersNum][mapSide * mapSide]; //?????????????????????
-
-		for (int i = 0; i < playersNum; i++) {
-			for (int j = 0; j < testTile.length; j++) {
-				arrayTiles[i][j] = new Tile(0, 0, 0);
-				arrayTiles[i][j].tileX = testTile[j].tileX;
-				arrayTiles[i][j].tileY = testTile[j].tileY;
-				arrayTiles[i][j].tileType = testTile[j].tileType;
-			}
-		}*/
-		System.out.println("MAP CREATED!!");
+		MapGenerator a = mg.createMap(mapSide, mapsType);
+		//a.displayLoop(); //TODO REMOVE
+		arrayTiles2 = a.returnArray();
 	}
 
-	void startPositions() {
-		MapGenerator maps = null;
-		Tile[][] arrayTiles = maps.getArrayTiles(); 
-		System.out.println(maps.getTile(0,2).getType());
+	public void startPositions() {
+		int length = (mapSide * mapSide);
 		boolean done;
-		//	int[][] playersStartPosition = new int[playersNum][2];
+		int[][] playersStartPosition = new int[playersNum][2];
 		int counter = 0;
-
-		for(int i=0; i< playersNum; i++){
+		while (counter < playersNum) {
 			done = false;
-
-			for (int a  = 0; a < playersNum; a++) {
-				if (arrayPlayers[a] == null) {
-					arrayPlayers[a] = new Player();
-				}
-			}
-			
 			while (!done) {
-				double aX = ((mapSide * rand.nextDouble())); //randomly select a position for x
-				double aY = (( mapSide * rand.nextDouble()));
-
-				int f = (int) Math.round(aX);
-				int g = (int) Math.round(aY);
-				if (f < 0 || g<0) {
-					f = 1;
-					g=1;
-				} else if (f > mapSide || g>mapSide) {
-					f = mapSide;
-					g= mapSide;
+				double a = (length * rand.nextDouble());
+				int f = (int) Math.round(a);
+				if (f < 0) {
+					f = 0;
+				} else if (f > (length)) {
+					f = (length);
 				}
-
-				System.out.println("TILE TYPE FOR XF "+(g-1)+" AND YG "+(f-1) + "is " + maps.getTile(g-1,f-1).getType());
-				if(maps.getTile(g-1, f-1).getType()==0){
-					arrayPlayers[i].startPositions(g-1, f-1);
+				if (arrayTiles2[f].tileType == 0) {
+					playersStartPosition[counter][0] = arrayTiles2[f].tileX;
+					playersStartPosition[counter][1] = arrayTiles2[f].tileY;
 					done = true;
 				}
 			}
-			counter ++;
-			
+			counter++;
+		}
+
+		for (int i = 0; i < playersNum; i++) {
+			if (arrayPlayers[i] == null) {
+				arrayPlayers[i] = new Player();
+			}
+			arrayPlayers[i].setX(playersStartPosition[i][0]);
+			arrayPlayers[i].setY(playersStartPosition[i][1]);
 		}
 	}
 
-	void getMoves() {
+	public void getMoves() {
 		for (int i = 0; i < playersNum; i++) {
 			System.out.println("Enter direction of movement, player " + i + ", ((U)p, (D)own, (L)eft or (R)ight) :");
 			playerMoves[i] = sc.next().charAt(0);
-			arrayPlayers[i].movePlayers(playerMoves[i], i);
 		}
 	}
 
+	public void movePlayers() {
+		for (int i = 0; i < playersNum; i++) {
+			if (playerMoves[i] == 'u' || playerMoves[i] == 'U') {
+				if (arrayPlayers[i].currentposX != 0) {
+					arrayPlayers[i].moveUp();
+				}
+			} else if (playerMoves[i] == 'd' || playerMoves[i] == 'D') {
+				if (arrayPlayers[i].currentposX != mapSide - 1) {
+					arrayPlayers[i].moveDown();
+				}
+			} else if (playerMoves[i] == 'l' || playerMoves[i] == 'L') {
+				if (arrayPlayers[i].currentposY != 0) {
+					arrayPlayers[i].moveLeft();
+				}
+			} else if (playerMoves[i] == 'r' || playerMoves[i] == 'R') {
+				if (arrayPlayers[i].currentposY != mapSide - 1) {
+					arrayPlayers[i].moveRight();
+				}
+			} else {
+				System.out.println("Player " + i + " entered an invalid move.");
+			}
+		}
+	}
 
-
-	/*int checkWater() {
-		for (int i = 0; i < arrayTiles[0].length; i++) {
+	int checkWater() {
+		for (int i = 0; i < arrayTiles2.length; i++) {
 			for (int j = 0; j < playersNum; j++) {
-				if (arrayTiles[0][i].tileType == 1) {
-					if ((arrayPlayers[j].currentposX == arrayTiles[0][i].tileX) && (arrayPlayers[j].currentposY == arrayTiles[0][i].tileY)) {
+				if (arrayTiles2[i].tileType == 1) {
+					if ((arrayPlayers[j].currentposX == arrayTiles2[i].tileX) && (arrayPlayers[j].currentposY == arrayTiles2[i].tileY)) {
+						int currTeam = arrayPlayers[j].getTeam();
+						for (int k = 0; k < playersNum; k++) {
+							if (arrayPlayers[k].getTeam() == currTeam) {
+								visited[k][i] = true;
+							}
+						}
 						System.out.println("Player " + j + " you have fallen in the water");
-						arrayTiles[j][i].tileUncovered = true; // uncover the water tile
 						arrayPlayers[j].currentposX = arrayPlayers[j].startposX;
 						arrayPlayers[j].currentposY = arrayPlayers[j].startposY;
 
@@ -225,17 +309,17 @@ public class Game {
 		}
 		return 0;
 	}
-	 */
-	int[] checkWin() {
+
+	public int[] checkWin() {
 		int winX = 0, winY = 0;
 		int[] winPlayers = new int[playersNum];
 
-		/*for (int i = 0; i < arrayTiles[0].length; i++) {
-			if (arrayTiles[0][i].tileType == 2) {
-				winX = arrayTiles[0][i].tileX;
-				winY = arrayTiles[0][i].tileY;
+		for (int i = 0; i < arrayTiles2.length; i++) {
+			if (arrayTiles2[i].tileType == 2) {
+				winX = arrayTiles2[i].tileX;
+				winY = arrayTiles2[i].tileY;
 			}
-		}*/
+		}
 
 		for (int i = 0; i < winPlayers.length; i++) {
 			winPlayers[i] = 0;
@@ -246,49 +330,72 @@ public class Game {
 				winPlayers[i] = 1;
 			}
 		}
-
 		return winPlayers;
 	}
 
-	void addUncovered() {
-		
-		/*if (first) {
+	public void addUncovered() {
+		if (first) {
 			first = false;
 			for (int i = 0; i < playersNum; i++) {
-				for (int j = 0; j < arrayTiles[i].length; j++) {
-					if () {
-						arrayTiles[i][j].uncoverTile();
+				for (int j = 0; j < arrayTiles2.length; j++) {
+					if ((arrayTiles2[j].tileX == arrayPlayers[i].startposX) && (arrayTiles2[j].tileY == arrayPlayers[i].startposY)) {
+						int currTeam = arrayPlayers[i].getTeam();
+						for (int k = 0; k < playersNum; k++) {
+							if (arrayPlayers[k].getTeam() == currTeam) {
+								visited[k][j] = true;
+							}
+						}
 					}
 				}
 			}
 
 			for (int i = 0; i < playersNum; i++) {
-				for (int j = 0; j < arrayTiles[i].length; j++) {
-					if ((arrayTiles[i][j].tileX == arrayPlayers[i].currentposX) && (arrayTiles[i][j].tileY == arrayPlayers[i].currentposY)) {
-						arrayTiles[i][j].uncoverTile();
+				for (int j = 0; j < arrayTiles2.length; j++) {
+					if ((arrayTiles2[j].tileX == arrayPlayers[i].currentposX) && (arrayTiles2[j].tileY == arrayPlayers[i].currentposY)) {
+						int currTeam = arrayPlayers[i].getTeam();
+						for (int k = 0; k < playersNum; k++) {
+							if (arrayPlayers[k].getTeam() == currTeam) {
+								visited[k][j] = true;
+							}
+						}
 					}
 				}
 			}
 		} else {
 			for (int i = 0; i < playersNum; i++) {
-				for (int j = 0; j < arrayTiles[i].length; j++) {
-					if ((arrayTiles[i][j].tileX == arrayPlayers[i].currentposX) && (arrayTiles[i][j].tileY == arrayPlayers[i].currentposY)) {
-						arrayTiles[i][j].uncoverTile();
+				for (int j = 0; j < arrayTiles2.length; j++) {
+					if ((arrayTiles2[j].tileX == arrayPlayers[i].currentposX) && (arrayTiles2[j].tileY == arrayPlayers[i].currentposY)) {
+						int currTeam = arrayPlayers[i].getTeam();
+						for (int k = 0; k < playersNum; k++) {
+							if (arrayPlayers[k].getTeam() == currTeam) {
+								visited[k][j] = true;
+							}
+						}
 					}
 				}
 			}
-		}*/
+		}
+
+		/* OLD FUNCTION
+         for (int i = 0; i < playersNum; i++) {
+         for (int j = 0; j < arrayTiles2.length; j++) {
+         if ((arrayTiles2[j].tileX == arrayPlayers[i].currentposX) && (arrayTiles2[j].tileY == arrayPlayers[i].currentposY)) {
+         visited[i][j] = true;
+         }
+         }
+         }
+		 */
 	}
 
-	void outputCurrentPos() {
+	public void outputCurrentPos() {
 		System.out.println();
 		for (int i = 0; i < playersNum; i++) {
-			System.out.println("Player " + i + " is at coords: " + arrayPlayers[i].currentposX + ", " + arrayPlayers[i].currentposY);
+			System.out.println("Player " + i + " is at coords: y: " + arrayPlayers[i].currentposY + ", x: " + arrayPlayers[i].currentposX);
 		}
 		System.out.println();
 	}
 
-	/*void generateHtml(Player player, Tile[][] arrayTile, int playerNumber) {
+	public void generateHtml(Player player, int playerNumber) { //TODO change input to just counter
 
 		PrintWriter fileCreate = null;
 		try {
@@ -304,20 +411,19 @@ public class Game {
 		fileCreate.println("<body>");
 		fileCreate.println("<table style = \"margin:0px auto; border \"75\" cellspacing \"21\" cellpadding = \"20\" bgcolor =006633 \"\"; >");
 
-		for (int j = 0; j < mapSide; j++) {
+		for (int i = 0; i < mapSide; i++) {
 			fileCreate.println("<tr>");
-			for (int i = 0; i < mapSide; i++) {
-				if ((arrayTile[playerNumber][mapSide * j + i].tileUncovered == false)) {
+			for (int j = 0; j < mapSide; j++) {
+				if (visited[playerNumber][mapSide * i + j] == false) {
 					fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/hiddenTile.jpg \">"); //if player position agrees with current axis then player position image
-				} else if (arrayTile[playerNumber][mapSide * j + i].tileUncovered == true) {
-					if (((player.getX() == (i)) && (player.getY() == (j))) && (arrayTile[playerNumber][mapSide * j + i].tileType == 2) == true) {
+				} else if (visited[playerNumber][mapSide * i + j] == true) {
+					if (((player.getX() == (i)) && (player.getY() == (j))) && (arrayTiles2[mapSide * i + j].tileType == 2) == true) {
 						fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/winTile.jpg \">"); //win
 					} else if ((player.getX() == (i)) && (player.getY() == (j))) {
 						fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/pirateTile.jpg \">"); //if player position agrees with current axis then player position image
-					} else if (arrayTile[playerNumber][mapSide * j + i].tileType == 0) {
+					} else if (arrayTiles2[mapSide * i + j].tileType == 0) {
 						fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/grassTile.jpg \">"); //grass
-
-					} else if (arrayTile[playerNumber][mapSide * j + i].tileType == 1) {
+					} else if (arrayTiles2[mapSide * i + j].tileType == 1) {
 						fileCreate.println("<td width=\"12\" align = \"center\" background =  \"images/waterTile.jpg \">"); //water
 					}
 				}
@@ -342,6 +448,6 @@ public class Game {
 		fileCreate.println("</html>");
 		fileCreate.close();
 
-	}*/
+	}
 
 }

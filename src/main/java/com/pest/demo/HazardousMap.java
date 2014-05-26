@@ -1,69 +1,50 @@
 package task2;
 
-import java.util.*;
-
 public class HazardousMap extends MapGenerator {
 
-	private HazardousMap (int a){
-		super(a);
-	}
+    private HazardousMap(int size) {
+        super(size);
+    }
 
-	public static MapGenerator getMapInstance(int a){
-		System.out.println("ok?");
-		if(MapGenerator.map == null)
-			map = new HazardousMap(a);
-		System.out.println("GET MAP INSTANCE OK");
-		return MapGenerator.map;
-	}
+    public static MapGenerator getMapInstance(int size) {
+        
+        if (MapGenerator.map == null) {
+            map = new HazardousMap(size);
+        }
 
-	public int typeSet(int currTile){
-		Random rand = new Random();
-		int waterTilesMax = (int) Math.round((35*mapSize)/100);
-		int waterTilesMin = (int) Math.round((25*mapSize)/100);
-		int amount = rand.nextInt(waterTilesMax - waterTilesMin)+ waterTilesMin; // amount of tiles which will be water
-		int a = (int) (Math.round(10 * rand.nextDouble()));
-		int waterTilesCurr =0;
+        return MapGenerator.map;
+    }
 
-		//TODO - TAKE OFF THESE PRINTS
-		System.out.println("water MIN: " + waterTilesMin); //!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		System.out.println("water MAX: " + waterTilesMax);  //!!!!!!!!!!!!!!!!!!!!!!!!!!
-		System.out.println("Number of Water Tiles : " + amount); // ??????????
+    public int typeSet(int currTile) {
+        waterTilesMax = Math.round(((mapSize)/10)+((mapSize)/4));
+        int a = (int)(Math.random()*10);
 
-		if(currTile ==23 && !winTileCreated){
-			return 2;
-		}
-		else {
-			if(a>8 && !winTileCreated){
+        if (currTile > mapSize-3 && !winTileCreated) {
+            winTileCreated = true;
+            return 2;
+        } else {
+            if (a > 8 && !winTileCreated) {
+                winTileCreated = true;
+                return 2;
+            } else if (a < 5 && (waterTilesCurr < waterTilesMax)) {
+                waterTilesCurr++;
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
 
-				winTileCreated = true;
-				return 2; 
-			}
-			else if ( a<5 && (waterTilesCurr < amount)){
-				waterTilesCurr ++;
-				return 1;
-			}
-			else {
-				return 0;
-			}
-		}
-	}
+    @Override
+    public void generateLoop() {
+        arrayTiles = new Tile[mapSize];
+        int counter = 0;
 
-	@Override
-	public void generateLoop() {
-		System.out.println("generate LOOP");
-		arrayTiles = new Tile[dimension][dimension];
-		int counter=0;
-
-		for (int i = 0; i < dimension; i++) {
-			for (int j = 0; j < dimension; j++) {
-				arrayTiles[i][j] = new Tile(j , i , typeSet(counter));// ???TODO
-				counter++;
-				System.out.println("TYPE" + arrayTiles[i][j].getType());
-
-			}
-		}
-		System.out.println("array of tiles created... ");
-
-	}
-
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
+                arrayTiles[counter] = new Tile(j, i, typeSet(counter));
+                counter++;
+            }
+        }
+    }
 }

@@ -2,59 +2,58 @@ package task2;
 
 public class Player {
 
-    private int startposX;
-    private int startposY;
-    int currentposX;
-    int currentposY;
+    int startposX;
+    int startposY;
+    public int currentposX;
+    public int currentposY;
+    public int team;
 
-    public Player(){
-    	
-    }
-    
     public Player(int a, int b) {
-        startposX = a;
-        startposY = b;
+        startposX = b;
+        startposY = a;
     }
     
-    private Positions p;
-    private Positions starts;
-    Game g;
-    
-    void movePlayers(char c, int playerNum) {
-			if (c == 'u' || c == 'U') {
-				if (currentposY != 0) {
-					p.moveUp();
-				}
-			} else if (c == 'd' ||c == 'D') {
-				if (currentposY != g.mapSide - 1) {
-					p.moveDown();
-				}
-			} else if (c == 'l' || c == 'L') {
-				if (currentposX != 0) {
-					p.moveLeft();
-				}
-			} else if (c == 'r' || c == 'R') {
-				if (currentposX != g.mapSide - 1) {
-					p.moveRight();
-				}
-			} else {
-				System.out.println("Player " + playerNum + " entered an invalid move.");
-			}
-	}
-   
-    public Positions getPosition(){
-    	return p;
+    public Player() {
     }
-    void startPositions(int x , int y){
-    	p = new Positions(x, y);
-    	System.out.println("Starting Positions set");
-    	System.out.println("x: " + p.getX()+ ", y : " + p.getY());
-    
-    }
-    
-    void positions(Positions position){
-    	p = new Positions(p.getX(), p.getY());
-    	System.out.println("Starting Positions set");
 
+    public void moveUp() {
+    	currentposX -=1;	
     }
+
+    public void moveDown() {
+    	currentposX +=1;	
+    }
+
+    public void moveLeft() {
+    	currentposY -=1;	
+    }
+
+    public void moveRight() {
+    	currentposY +=1;
+    }
+    
+    public void setX(int a) {
+        this.startposX = a;
+        this.currentposX = startposX;
+    }
+    
+    public void setY(int b) {
+        this.startposY = b;
+        this.currentposY = startposY;
+    }
+    
+    public int getX(){
+    	return currentposX;
+    }
+    
+    public int getY(){
+    	return currentposY;
+    }
+    
+    public void setTeam(int c) {
+        this.team = c;
+    }
+    public int getTeam() {
+        return team;
+    }    
 }
