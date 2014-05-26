@@ -8,8 +8,8 @@ import task2.MapGenerator;
 import task2.MapGeneratorCreator;
 import task2.SafeMap;
 import task2.SafeMapCreator;
-
 import static org.junit.Assert.*;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,7 +23,6 @@ public class GameTest {
 	MapGenerator map = null;
 	Game game;
 	Tile[] arrayTiles;
-	///Tile[] HazardousT;
 	Player[] player;
 	Player [] player2;
 	boolean[][] visited ;
@@ -48,12 +47,15 @@ public class GameTest {
 		player = new Player [numOfPlayers];
 		player2 = new Player [numOfPlayers];
 		
+		player[0] = new Player();
 		player[1] = new Player();
 		player[2] = new Player();
 		player[3] = new Player();
 		
+		player[0].currentposX = 1;
+		player[0].currentposY = 2;
 		
-		player[1].currentposX =3; //winner safe map
+		player[1].currentposX =3; //winner 
 		player[1].currentposY =4; 
 		
 		player[2].currentposX = 5;
@@ -78,17 +80,15 @@ public class GameTest {
 		player2[2].currentposX = 6;
 		player2[2].currentposY = 7;
 		
-		player2[4].currentposX = 9; //winner Hazardous Map
+		player2[4].currentposX = 9; 
 		player2[4].currentposY = 9;
 		
 		player2[2].team =2; //no teams
 		
-		//win Tiles Safe
 		winX = arrayTiles[1].tileX =3;
 		winY = arrayTiles[1].tileY =4;
 				
 		
-		//tileTypes Safe
 		arrayTiles[1].tileType = 2;
 		arrayTiles[3].tileType = 1;
 		arrayTiles[2].tileType = 1;
@@ -164,6 +164,51 @@ public class GameTest {
 		assertEquals(0, game.mapType(4));
 		
 	}
+	
+	@Test
+	public void testStartQuestions(){
+		
+	}
+	
+	@Test
+	public void testSetUpTeams(){
+		Player arrayPlayers[] = null;
+		game.start();
+		game.setUpTeams(2, 4);
+
+		
+		Player [] play = new Player[4];
+		int playNum =0;
+		
+		for(int i=0; i < 4; i++){
+			play[playNum] = new Player();
+			play[i].setTeam(i);
+			playNum++;
+		}
+		
+		assertEquals(0, play[0].getTeam());
+		assertEquals(1, play[1].getTeam());
+		
+	}
+	
+	
+/*	@SuppressWarnings("null")
+	@Test
+	public void testMovePlayers(){
+		char[] playerMoves = null;
+		playerMoves = new char[5];
+		playerMoves[0] ='g'; //fails
+		playerMoves[1] = 'u';
+		playerMoves[2] = 'd';
+		playerMoves[3] = 'l';
+		playerMoves[4] = 'r';
+		
+		player[1].moveUp();
+		
+		
+		
+		
+	}*/
 	
 	@Test
 	public void testCheckWater(){
