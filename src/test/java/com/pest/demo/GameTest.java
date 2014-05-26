@@ -238,6 +238,15 @@ public class GameTest {
 		assertEquals(false, visited[0][5]);	
 	}
 	
+	@Test 
+	public void testCreateTileArray(){
+		MapGeneratorCreator map2 = new MapGeneratorCreator();
+		MapGenerator m = map2.createMap(3,2);
+		Tile[] t;
+		t= m.returnArray();
+		
+		assertNotNull(t);		
+	}
 	
 	@Test
 	public void testGenerateHtml() {
