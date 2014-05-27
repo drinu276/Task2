@@ -29,7 +29,7 @@ public class GameTest {
 	Game game;
 	Tile[] arrayTiles;
 	Player[] player;
-	Player [] player2;
+	Player [] player2 , player3;
 	boolean[][] visited ;
 	int winX, winY  =0;
 	int waterX, waterY =0;
@@ -51,6 +51,7 @@ public class GameTest {
 		arrayTiles = map.returnArray();
 		player = new Player [numOfPlayers];
 		player2 = new Player [7];
+		player3 = new Player[4];
 		
 		player[0] = new Player();
 		player[1] = new Player();
@@ -66,6 +67,9 @@ public class GameTest {
 		player[2].currentposX = 5;
 		player[2].currentposY = 3;
 		
+		player[3].currentposX =4;
+		player[3].currentposY =5;
+				
 		//teams
 		player[1].setTeam(1);
 		player[2].setTeam(2);
@@ -100,6 +104,23 @@ public class GameTest {
 		player2[6].currentposY = 2;
 		
 		player2[2].team =2; //no teams
+		
+		player3[0] = new Player();
+		player3[1] = new Player();
+		player3[2] = new Player();
+		player3[3] = new Player();
+		
+		player3[0].currentposX =1;
+		player3[0].currentposY =2; 
+			
+		player3[1].currentposX =4;
+		player3[1].currentposY =5; 
+		
+		player3[2].currentposX = 6;
+		player3[2].currentposY = 7;
+		
+		player3[3].currentposX = 6;
+		player3[3].currentposY = 9;
 		
 		winX = arrayTiles[1].tileX =3;
 		winY = arrayTiles[1].tileY =4;
@@ -334,7 +355,7 @@ public class GameTest {
 	@Test
 	public void testAddUncovered(){
 		System.out.println("testAddUncovered");
-		int playersNum = 4;
+		//int playersNum = 4;
 		game.mapSide = 5;
 
 		MapGenerator map2 = SafeMap.getMapInstance(25);
@@ -363,7 +384,7 @@ public class GameTest {
 		}
 		*/
 		
-		game.addUncovered(arrayTiles, player, 4);
+		game.addUncovered(arrayTiles, player3, 4);
 	//	assertEquals(visited[1][1], game.visited[1][1]);
 		
 		
