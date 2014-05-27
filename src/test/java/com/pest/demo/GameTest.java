@@ -358,7 +358,7 @@ public class GameTest {
 		//int playersNum = 4;
 		game.mapSide = 5;
 
-		map2 = SafeMap.getMapInstance(5);
+		map2 = SafeMap.getMapInstance(25);
 		arrayTiles2 = map.returnArray();
 		
 		game.visited = new boolean[4][game.mapSide*game.mapSide];
