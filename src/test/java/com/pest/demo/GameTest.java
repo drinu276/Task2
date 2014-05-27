@@ -24,7 +24,7 @@ import org.junit.*;
 
 
 public class GameTest {
-	
+
 	MapGenerator map = null;
 	MapGenerator map2 = null;
 	Game game;
@@ -34,7 +34,7 @@ public class GameTest {
 	boolean[][] visited ;
 	int winX, winY  =0;
 	int waterX, waterY =0;
-	
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
@@ -53,28 +53,28 @@ public class GameTest {
 		player = new Player [numOfPlayers];
 		player2 = new Player [7];
 		player3 = new Player[4];
-		
+
 		player[0] = new Player();
 		player[1] = new Player();
 		player[2] = new Player();
 		player[3] = new Player();
-		
+
 		player[0].currentposX = 1;
 		player[0].currentposY = 2;
-		
+
 		player[1].currentposX =3; //winner 
 		player[1].currentposY =4; 
-		
+
 		player[2].currentposX = 5;
 		player[2].currentposY = 3;
-		
+
 		player[3].currentposX =4;
 		player[3].currentposY =5;
-				
+
 		//teams
 		player[1].setTeam(1);
 		player[2].setTeam(2);
-		
+
 		player2[0] = new Player();
 		player2[1] = new Player();
 		player2[2] = new Player();
@@ -82,122 +82,133 @@ public class GameTest {
 		player2[4] = new Player();
 		player2[5] = new Player();
 		player2[6] = new Player();
-		
+
 		player2[0].currentposX =1;
 		player2[0].currentposY =2; 
-			
+
 		player2[1].currentposX =4;
 		player2[1].currentposY =5; 
-		
+
 		player2[2].currentposX = 6;
 		player2[2].currentposY = 7;
-		
+
 		player2[3].currentposX = 6;
 		player2[3].currentposY = 9;
-		
+
 		player2[4].currentposX = 9; 
 		player2[4].currentposY = 9;
-		
+
 		player2[5].currentposX = 3;//winner
 		player2[5].currentposY = 4;
-		
+
 		player2[6].currentposX = 2;//water
 		player2[6].currentposY = 2;
-		
+
 		player2[2].team =2; //no teams
-		
+
 		player3[0] = new Player();
 		player3[1] = new Player();
 		player3[2] = new Player();
 		player3[3] = new Player();
-		
+
 		player3[0].currentposX =1;
 		player3[0].currentposY =2; 
-			
+
 		player3[1].currentposX =4;
 		player3[1].currentposY =5; 
-		
+
 		player3[2].currentposX = 6;
 		player3[2].currentposY = 7;
-		
+
 		player3[3].currentposX = 6;
 		player3[3].currentposY = 9;
-		
+
 		winX = arrayTiles[1].tileX =3;
 		winY = arrayTiles[1].tileY =4;
-		
+
 		waterX = arrayTiles[3].tileX =2;
 		waterY = arrayTiles[3].tileY =2;
-				
+
 		arrayTiles[1].tileType = 2;
 		arrayTiles[3].tileType = 1;
 		arrayTiles[2].tileType = 1;
 		arrayTiles[4].tileType = 0;
 		arrayTiles[5].tileType = 0;
-		
+
 		visited = new boolean[numOfPlayers][mapSide * mapSide];
-		
+
 		visited[1][2] = true;
 		visited[2][5] = true;
-		
+
 	}
 
 	@After
 	public void tearDown() throws Exception {
 	}
 
-	
+
 	@Test
 	public void testCheckNumberOfTeams() {
-			System.out.println("checkNumberOfTeams");
-			assertEquals(false, game.checkNumberOfTeams(5, 4));
-			assertEquals(false, game.checkNumberOfTeams(5,3));
-			assertEquals(true, game.checkNumberOfTeams(3,4));
-			assertEquals(true, game.checkNumberOfTeams(8,8));
+		System.out.println("checkNumberOfTeams");
+		assertEquals(false, game.checkNumberOfTeams(5, 4));
+		assertEquals(false, game.checkNumberOfTeams(5,3));
+		assertEquals(true, game.checkNumberOfTeams(3,4));
+		assertEquals(true, game.checkNumberOfTeams(8,8));
 	}
-		
+
 	@Test
 	public void testGameType(){
-		
+
 		assertEquals(-1, game.gameType('L')); //LETTER does not exist
 		assertEquals(1, game.gameType('Y'));
 		assertEquals(0, game.gameType('N'));
 		assertEquals(0, game.gameType('n'));
 		assertEquals(1, game.gameType('y'));
-		
-		int playerNum=2;
+
+		/*int playerNum=2;
 		Player[] player4;
 		player4 = new Player [playerNum];
-		game.gameType('N');
-		
-		if(game.gameType('N') == 0|| game.gameType('n') ==0){
+		game.gameType('N');*/
+
+		/*if(game.gameType('N') == 0|| game.gameType('n') ==0){
 			for(int i=0; i<playerNum; i++){
 				player4[i]= new Player();
 				player4[i].setTeam(i);
 			}
+		}*/
+		Player[] arrayPlayers;
+		game.arrayPlayers = new Player[4];
+		game.gameType('N');
+
+		if (game.gameType('N')==0 || game.gameType('n')==0) {
+			for (int i = 0; i < 4; i++) {
+				game.arrayPlayers[i] = new Player();
+				game.arrayPlayers[i].setTeam(i);
+			}
 		}
-		assertEquals(0, player4[0].getTeam());
-		assertEquals(1, player4[1].getTeam());
-		assertNotEquals(1, player4[0].getTeam());
+
+		assertEquals(0, game.arrayPlayers[0].getTeam());
+		assertEquals(1, game.arrayPlayers[1].getTeam());
+		assertNotEquals(1, game.arrayPlayers[0].getTeam());
 	}
-	
+
 	@Test	
 	public void testCheckNumberOfPlayers() {
 		System.out.println("checkNumberOfPlayers");
-       
-        assertEquals(true, game.checkNumberOfPlayers(4));
-        assertEquals(false, game.checkNumberOfPlayers(0));
-        assertEquals(false, game.checkNumberOfPlayers(9));
-        assertEquals(true, game.checkNumberOfPlayers(8));
-        assertEquals(true, game.checkNumberOfPlayers(2));
-     
+
+		assertEquals(true, game.checkNumberOfPlayers(4));
+		assertEquals(false, game.checkNumberOfPlayers(0));
+		assertEquals(false, game.checkNumberOfPlayers(9));
+		assertEquals(true, game.checkNumberOfPlayers(8));
+		assertEquals(true, game.checkNumberOfPlayers(2));
+
 	}
-	
+
 	@Test
 	public void testCheckMapSize() {
 		System.out.println("testCheckMapSize");
 		Game instance = new Game();
-	
+
 		assertEquals(true,instance.checkMapSize(4, 7));	
 		assertEquals(true, instance.checkMapSize(8, 50));	
 		assertEquals(false, instance.checkMapSize(3,4));
@@ -205,9 +216,9 @@ public class GameTest {
 		assertEquals(false, instance.checkMapSize(5, 6));
 		assertEquals(false, instance.checkMapSize(3, 60));
 		assertEquals(false, instance.checkMapSize(5,3));
-			
+
 	}
-	
+
 	@Test
 	public void testMapType() {
 		System.out.println("testMapType");
@@ -215,16 +226,16 @@ public class GameTest {
 		assertEquals(1, game.mapType(1));
 		assertEquals(2, game.mapType(2));
 		assertEquals(0, game.mapType(4));
-		
+
 	}
-	
+
 	@Test
 	public void testOutputCurrentPos(){
 		assertEquals(true,game.outputCurrentPos(player2));
 		assertEquals(true, game.outputCurrentPos(player));
-		
+
 	}
-	
+
 	@SuppressWarnings("null")
 	@Test
 	public void testSetUpTeams(){
@@ -239,21 +250,21 @@ public class GameTest {
 		Player[] arrayPlayers;
 		int playerNum =4;		
 		game.setUpTeams(3,playerNum);		
-		
+
 		assertEquals(0, game.arrayPlayers[0].getTeam());
 		assertEquals(1, game.arrayPlayers[1].getTeam());
 		assertEquals(2, game.arrayPlayers[2].getTeam());
 		assertNotSame(game.arrayPlayers[2], game.arrayPlayers[1]);
-		
+
 		assertNotNull(game.arrayPlayers[3].getTeam()); // cant check which team since this is allocated randomely
 	}
-		
+
 	@Test
 	public void testSetUpTeams3(){
 		Player[] arrayPlayers;
 		int playerNum =7;		
 		game.setUpTeams(3,playerNum);		
-		
+
 		assertEquals(0, game.arrayPlayers[0].getTeam());
 		assertEquals(1, game.arrayPlayers[1].getTeam());
 		assertEquals(1, game.arrayPlayers[4].getTeam());
@@ -261,7 +272,7 @@ public class GameTest {
 		assertEquals(0, game.arrayPlayers[6].getTeam());
 		assertNotSame(game.arrayPlayers[2], game.arrayPlayers[1]);
 	}
-	
+
 	@Test
 	public void testMovePlayers(){
 		//passes
@@ -274,16 +285,16 @@ public class GameTest {
 		assertEquals(false, game.movePlayers('g', player2, 3));
 		assertEquals(false, game.movePlayers('f', player2, 4));
 	}
-	
+
 	public void testcreateTilesArray(){
 		MapGeneratorCreator map2 = new MapGeneratorCreator();
 		MapGenerator a = map2.createMap(game.mapSide, game.mapsType);
 		a.returnArray();
 		game.createTilesArray();
 		assertNotNull(game.createTilesArray());
-		
+
 	}
-	
+
 	@Test
 	public void testStartPositions(){
 		game.mapSide = 5; 
@@ -292,15 +303,15 @@ public class GameTest {
 		MapGeneratorCreator map2 = new MapGeneratorCreator();
 		MapGenerator a = map2.createMap(game.mapSide, game.mapsType);
 		arrayTiles2 = a.returnArray();
-		
+
 		game.startPositions();
 	}
-		
+
 	@Test
 	public void testCheckWin(){
 		int[] winners = new int[2];
 		//winners[0] = 1;
-		
+
 		for (int i = 0; i < arrayTiles.length; i++) {
 			if (arrayTiles[i].tileType == 2) {
 				winX = arrayTiles[i].tileX;
@@ -309,7 +320,7 @@ public class GameTest {
 				System.out.println(winX);
 			}
 		}
-		
+
 		for (int i = 0; i<winners.length; i++){
 			if(player[i].currentposX == winX && player[i].currentposY == winY) {
 				assertEquals(winX, player[i].currentposX);
@@ -317,30 +328,30 @@ public class GameTest {
 				winners[i] = 1;
 			}
 		}
-		
+
 		game.checkWin(arrayTiles, player,2);
 		assertEquals(winners.length, game.checkWin(arrayTiles, player,2).length);
 		assertEquals(winners[0], game.checkWin(arrayTiles, player, 2)[0]);		
 	}
-	
+
 	@Test
 	public void testCheckWater(){
 		game.mapSide =5;
 		int playersNum = 4;
 		game.visited = new boolean[4][game.mapSide*game.mapSide];
-		
+
 		for (int i = 0; i < arrayTiles.length; i++) {
 			for (int j = 0; j < playersNum; j++) {
 				if (arrayTiles[i].tileType == 1) {
 					assertEquals(1, arrayTiles[i].tileType);				
-					
+
 					if ((player2[j].currentposX == arrayTiles[i].tileX) && (player2[j].currentposY == arrayTiles[i].tileY)) {
 						assertEquals(arrayTiles[i].tileX, player2[i].currentposX);
 						assertEquals(arrayTiles[i].tileY, player2[i].currentposY);
-					
-						
+
+
 						int currTeam = player2[j].getTeam();
-					
+
 						for (int k = 0; k < playersNum; k++) {
 							if (player2[k].getTeam() == currTeam) {
 								assertEquals(currTeam, player2[k].getTeam());
@@ -355,12 +366,12 @@ public class GameTest {
 				}
 			}
 		}
-		
+
 		game.checkWater(arrayTiles, player2, 4);
 		assertEquals(0, game.checkWater(arrayTiles, player2, 4));	
 		assertEquals(visited[1][1], game.visited[1][1]);		
 	}
-	
+
 	@Test
 	public void testAddUncovered(){
 		System.out.println("testAddUncovered");
@@ -369,20 +380,20 @@ public class GameTest {
 
 		map2 = SafeMap.getMapInstance(25);
 		arrayTiles2 = map.returnArray();
-		
+
 		game.visited = new boolean[4][game.mapSide*game.mapSide];
-		
+
 		game.addUncovered(arrayTiles2, player3, 4);
-		
+
 		assertEquals(1 ,player[1].getTeam());
 		assertEquals(0, player[3].getTeam());
-		
+
 		assertEquals(true, visited[1][2]);
 		assertEquals(true , visited[2][5]);
 		assertEquals(false, visited[0][5]);	
 	}
-	
-		
+
+
 	@Test
 	public void testGenerateHtml() {
 		System.out.println("testGenerateHTML");
@@ -390,15 +401,15 @@ public class GameTest {
 		game.mapSide= 5;
 		map2.generateLoop();
 		game.visited = new boolean[4][game.mapSide*game.mapSide];
-		
+
 		File file1 = new File ("map_player_0.html");
 		File file2 = new File ("map_player_1.html");
 		File file3 = new File("maps");
-		
+
 		game.startPositions();;
 		game.generateHtml(2);
-		
-		
+
+
 		for(int i=0; i<game.mapSide;i++){
 			for(int j=0; j<game.mapSide;j++){
 				if(arrayTiles[game.mapSide*i+j].tileType==1){
@@ -410,9 +421,9 @@ public class GameTest {
 				}
 			}
 		}
-				
+
 		game.generateHtml(0);
-		
+
 		for(int i=0; i<game.mapSide;i++){
 			for(int j=0; j<game.mapSide;j++){
 				if(arrayTiles[game.mapSide*i+j].tileType==2){
@@ -423,16 +434,16 @@ public class GameTest {
 			}
 		}
 
-		
+
 		game.generateHtml(1);
-		
+
 		assertTrue(file1.exists());
 		assertTrue(file2.exists());
-		
+
 		assertFalse(file3.exists());
 		assertNotSame(file1,file2);
-		
+
 	}
-	
-	
+
+
 }
