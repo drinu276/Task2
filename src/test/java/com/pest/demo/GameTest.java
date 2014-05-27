@@ -117,8 +117,8 @@ public class GameTest {
 		player3[1].currentposX =4;
 		player3[1].currentposY =5; 
 
-		player3[2].startposX = 6;
-		player3[2].startposY = 7;
+		player3[2].currentposX = 6;
+		player3[2].currentposY = 7;
 
 		player3[3].currentposX = 6;
 		player3[3].currentposY = 9;
@@ -286,16 +286,17 @@ public class GameTest {
 		assertEquals(false, game.movePlayers('f', player2, 4));
 	}
 
+/*	@Test
 	public void testcreateTilesArray(){
-		/*MapGeneratorCreator map2 = new MapGeneratorCreator();
+		MapGeneratorCreator map2 = new MapGeneratorCreator();
 		MapGenerator a = map2.createMap(game.mapSide, game.mapsType);
-		a.returnArray();*/
-		Tile [] arrayTiles;
+		Tile [] arrayTiles= a.returnArray();
+		Tile[] arrayTiles2;
 		game.createTilesArray();
 		assertEquals(0, game.createTilesArray());
 		assertNotNull(game.createTilesArray());
 	}
-
+*/
 	@Test
 	public void testStartPositions(){
 		game.mapSide = 5; 
@@ -383,6 +384,27 @@ public class GameTest {
 		arrayTiles2 = map.returnArray();
 
 		game.visited = new boolean[4][game.mapSide*game.mapSide];
+
+		/*for (int i = 0; i < playersNum; i++) {
+			assertNotEquals(i,playersNum);
+			
+			for (int j = 0; j < arrayTiles.length; j++) {
+				if ((arrayTiles[j].tileX == player2[i].startposX) && (arrayTiles[j].tileY == player2[i].startposY)) {
+					
+					int currTeam = player2[i].getTeam();
+					for (int k = 0; k < playersNum; k++) {
+						assertEquals(currTeam, player2[k].getTeam());
+
+						if (player2[k].getTeam() == currTeam) {
+							visited[k][j] = true;
+
+						}
+					}
+				}
+			}
+		}
+		*/
+
 		game.addUncovered(arrayTiles2, player3, 4);
 
 		assertEquals(1 ,player[1].getTeam());
@@ -392,7 +414,6 @@ public class GameTest {
 		assertEquals(true , visited[2][5]);
 		assertEquals(false, visited[0][5]);	
 	}
-
 
 	@Test
 	public void testGenerateHtml() {
