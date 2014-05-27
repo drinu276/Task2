@@ -229,11 +229,6 @@ public class GameTest {
 	@Test
 	public void testSetUpTeams(){
 		int playerNum =3;	
-		int playerCount =0;
-		int numberOfTeams=3;
-		int playersRem =playerNum - numberOfTeams;
-		Player[] arrayPlayers = new Player[playerNum];
-
 		game.setUpTeams(3,playerNum);		
 		assertEquals(0, game.arrayPlayers[0].getTeam());
 		assertEquals(1, game.arrayPlayers[1].getTeam());	
@@ -253,6 +248,20 @@ public class GameTest {
 		assertNotNull(game.arrayPlayers[3].getTeam()); // cant check which team since this is allocated randomely
 	}
 		
+	@Test
+	public void testSetUpTeams3(){
+		Player[] arrayPlayers;
+		int playerNum =7;		
+		game.setUpTeams(3,playerNum);		
+		
+		assertEquals(0, game.arrayPlayers[0].getTeam());
+		assertEquals(1, game.arrayPlayers[1].getTeam());
+		assertEquals(1, game.arrayPlayers[4].getTeam());
+		assertEquals(2, game.arrayPlayers[5].getTeam());
+		assertEquals(0, game.arrayPlayers[6].getTeam());
+		assertNotSame(game.arrayPlayers[2], game.arrayPlayers[1]);
+	}
+	
 	@Test
 	public void testMovePlayers(){
 		//passes
@@ -362,26 +371,6 @@ public class GameTest {
 		arrayTiles2 = map.returnArray();
 		
 		game.visited = new boolean[4][game.mapSide*game.mapSide];
-
-		/*for (int i = 0; i < playersNum; i++) {
-			assertNotEquals(i,playersNum);
-			
-			for (int j = 0; j < arrayTiles.length; j++) {
-				if ((arrayTiles[j].tileX == player2[i].startposX) && (arrayTiles[j].tileY == player2[i].startposY)) {
-					
-					int currTeam = player2[i].getTeam();
-					for (int k = 0; k < playersNum; k++) {
-						assertEquals(currTeam, player2[k].getTeam());
-
-						if (player2[k].getTeam() == currTeam) {
-							visited[k][j] = true;
-
-						}
-					}
-				}
-			}
-		}
-		*/
 		
 		game.addUncovered(arrayTiles2, player3, 4);
 		
