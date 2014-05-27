@@ -36,7 +36,14 @@ public class Game {
 	}
 
 	public int loop() {
-		getMoves();
+	//	getMoves();
+		for (int i = 0; i < playersNum; i++) {
+			System.out.println("Enter direction of movement, player " + i + ", ((U)p, (D)own, (L)eft or (R)ight) :");
+			playerMoves[i] = sc.next().charAt(0);
+			movePlayers(playerMoves[i], arrayPlayers, i);
+			
+		}
+		
 		//movePlayers();
 		checkWater(arrayTiles2, arrayPlayers, playersNum);
 		addUncovered(arrayTiles2, arrayPlayers, playersNum);
@@ -256,14 +263,14 @@ public class Game {
 		}
 	}
 
-	public void getMoves() {
+	/*public void getMoves() {
 		for (int i = 0; i < playersNum; i++) {
 			System.out.println("Enter direction of movement, player " + i + ", ((U)p, (D)own, (L)eft or (R)ight) :");
 			playerMoves[i] = sc.next().charAt(0);
 			movePlayers(playerMoves[i], arrayPlayers, i);
 			
 		}
-	}
+	}*/
 
 	public boolean movePlayers(char playerMoves, Player arrayPlayers[] ,int i) {
 		//for (int i = 0; i < playersNum; i++) {
@@ -378,16 +385,6 @@ public class Game {
 				}
 			}
 		}
-
-		/* OLD FUNCTION
-         for (int i = 0; i < playersNum; i++) {
-         for (int j = 0; j < arrayTiles2.length; j++) {
-         if ((arrayTiles2[j].tileX == arrayPlayers[i].currentposX) && (arrayTiles2[j].tileY == arrayPlayers[i].currentposY)) {
-         visited[i][j] = true;
-         }
-         }
-         }
-		 */
 	}
 
 	public boolean outputCurrentPos(Player arrayPlayers[]) {
