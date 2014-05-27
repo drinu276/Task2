@@ -26,8 +26,9 @@ import org.junit.*;
 public class GameTest {
 	
 	MapGenerator map = null;
+	MapGenerator map2 = null;
 	Game game;
-	Tile[] arrayTiles;
+	Tile[] arrayTiles, arrayTiles2;
 	Player[] player;
 	Player [] player2 , player3;
 	boolean[][] visited ;
@@ -351,16 +352,14 @@ public class GameTest {
 		assertEquals(visited[1][1], game.visited[1][1]);		
 	}
 	
-	
 	@Test
 	public void testAddUncovered(){
 		System.out.println("testAddUncovered");
 		//int playersNum = 4;
 		game.mapSide = 5;
 
-		MapGenerator map2 = SafeMap.getMapInstance(25);
-		map2.generateLoop();
-		game.startPositions();
+		map2 = SafeMap.getMapInstance(5);
+		arrayTiles2 = map.returnArray();
 		
 		game.visited = new boolean[4][game.mapSide*game.mapSide];
 
@@ -384,9 +383,7 @@ public class GameTest {
 		}
 		*/
 		
-		game.addUncovered(arrayTiles, player3, 4);
-	//	assertEquals(visited[1][1], game.visited[1][1]);
-		
+		game.addUncovered(arrayTiles2, player3, 4);
 		
 		assertEquals(1 ,player[1].getTeam());
 		assertEquals(0, player[3].getTeam());
