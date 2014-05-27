@@ -291,8 +291,8 @@ public class GameTest {
 		MapGenerator a = map2.createMap(game.mapSide, game.mapsType);
 		a.returnArray();
 		game.createTilesArray();
+		assertEquals(0, game.createTilesArray());
 		assertNotNull(game.createTilesArray());
-
 	}
 
 	@Test
