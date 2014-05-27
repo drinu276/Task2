@@ -396,8 +396,8 @@ public class GameTest {
 		}
 		*/
 		
-		game.addUncovered(arrayTiles, player2, 2);
-		//assertEquals(visited[1][1], game.visited[1][1]);
+		game.addUncovered(arrayTiles, player2, 4);
+		assertEquals(visited[1][1], game.visited[1][1]);
 		
 		
 		assertEquals(1 ,player[1].getTeam());
