@@ -146,6 +146,7 @@ public class GameTest {
 	public void tearDown() throws Exception {
 	}
 
+	
 	@Test
 	public void testCheckNumberOfTeams() {
 			System.out.println("checkNumberOfTeams");
@@ -284,7 +285,6 @@ public class GameTest {
 		arrayTiles2 = a.returnArray();
 		
 		game.startPositions();
-		
 	}
 		
 	@Test
@@ -383,7 +383,7 @@ public class GameTest {
 		}
 		*/
 		
-		game.addUncovered(arrayTiles2, player3, 4);
+		//game.addUncovered(arrayTiles2, player3, 4);
 		
 		assertEquals(1 ,player[1].getTeam());
 		assertEquals(0, player[3].getTeam());
@@ -413,6 +413,8 @@ public class GameTest {
 		for(int i=0; i<game.mapSide;i++){
 			for(int j=0; j<game.mapSide;j++){
 				if(arrayTiles[game.mapSide*i+j].tileType==1){
+
+					assertEquals(1, arrayTiles[game.mapSide*i+j].tileType);
 					player[2].setX(i);
 					player[2].setY(j);
 					visited[2][game.mapSide*i+j] =true;
