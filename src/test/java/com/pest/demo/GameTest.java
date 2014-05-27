@@ -50,7 +50,7 @@ public class GameTest {
 		map = SafeMap.getMapInstance(5);
 		arrayTiles = map.returnArray();
 		player = new Player [numOfPlayers];
-		player2 = new Player [numOfPlayers];
+		player2 = new Player [7];
 		
 		player[0] = new Player();
 		player[1] = new Player();
@@ -213,37 +213,7 @@ public class GameTest {
 
 		game.setUpTeams(3,playerNum);		
 		assertEquals(0, game.arrayPlayers[0].getTeam());
-		assertEquals(1, game.arrayPlayers[1].getTeam());
-		
-		/*for (int i = 0; i < numberOfTeams; i++) { //place the first n players in the first n teams
-			arrayPlayers[playerCount] = new Player();
-			arrayPlayers[i].setTeam(i);
-			assertEquals(i, game.arrayPlayers[i].getTeam());
-			playerCount++;
-		}
-		if (playersRem > numberOfTeams) {
-			for (int i = 0; i < numberOfTeams; i++) {
-				arrayPlayers[playerCount] = new Player();
-				arrayPlayers[playerCount].setTeam(i);
-				
-				assertEquals(i,arrayPlayers[playerCount].getTeam());
-				
-				playerCount++;
-				playersRem--;
-			}
-		} else {
-			for (int i = 0; i < playersRem; i++) {
-				arrayPlayers[playerCount] = new Player();
-				arrayPlayers[playerCount].setTeam(i);
-				
-				assertEquals(i,arrayPlayers[playerCount].getTeam());
-
-				playerCount++;
-				playersRem--;
-			}
-		}
-		*/
-		
+		assertEquals(1, game.arrayPlayers[1].getTeam());	
 	}
 
 	@Test
@@ -357,37 +327,34 @@ public class GameTest {
 		
 		game.checkWater(arrayTiles, player2, 4);
 		assertEquals(0, game.checkWater(arrayTiles, player2, 4));	
-		assertEquals(visited[1][1], game.visited[1][1]);	
-		
+		assertEquals(visited[1][1], game.visited[1][1]);		
 	}
 	
 	
 	@Test
 	public void testAddUncovered(){
 		System.out.println("testAddUncovered");
-		int playersNum = 2;
+		int playersNum = 4;
 		game.mapSide = 5;
-		
-		player2[1].startposX =2;
-		player2[1].startposY =1;
+
+		MapGenerator map2 = SafeMap.getMapInstance(25);
+		map2.generateLoop();
+		game.startPositions();
 		
 		game.visited = new boolean[4][game.mapSide*game.mapSide];
-/*
-		for (int i = 0; i < playersNum; i++) {
+
+		/*for (int i = 0; i < playersNum; i++) {
 			assertNotEquals(i,playersNum);
 			
 			for (int j = 0; j < arrayTiles.length; j++) {
-				if ((arrayTiles[j].tileX == player[i].startposX) && (arrayTiles[j].tileY == player[i].startposY)) {
-					assertEquals(arrayTiles[i].tileX, player2[i].startposX);
-					assertEquals(arrayTiles[i].tileY, player2[i].startposY);
+				if ((arrayTiles[j].tileX == player2[i].startposX) && (arrayTiles[j].tileY == player2[i].startposY)) {
 					
-					int currTeam = player[i].getTeam();
+					int currTeam = player2[i].getTeam();
 					for (int k = 0; k < playersNum; k++) {
 						assertEquals(currTeam, player2[k].getTeam());
 
-						if (player[k].getTeam() == currTeam) {
+						if (player2[k].getTeam() == currTeam) {
 							visited[k][j] = true;
-							assertEquals(true,visited[k][i]);
 
 						}
 					}
@@ -396,8 +363,8 @@ public class GameTest {
 		}
 		*/
 		
-		game.addUncovered(arrayTiles, player2, 2);
-		//assertEquals(visited[1][1], game.visited[1][1]);
+		game.addUncovered(arrayTiles, player, 4);
+	//	assertEquals(visited[1][1], game.visited[1][1]);
 		
 		
 		assertEquals(1 ,player[1].getTeam());
@@ -449,8 +416,6 @@ public class GameTest {
 
 		
 		game.generateHtml(1);
-		
-		
 		
 		assertTrue(file1.exists());
 		assertTrue(file2.exists());
