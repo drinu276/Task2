@@ -383,7 +383,7 @@ public class GameTest {
 		}
 		*/
 		
-		//game.addUncovered(arrayTiles2, player3, 4);
+		game.addUncovered(arrayTiles2, player3, 4);
 		
 		assertEquals(1 ,player[1].getTeam());
 		assertEquals(0, player[3].getTeam());
