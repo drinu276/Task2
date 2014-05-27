@@ -117,8 +117,8 @@ public class GameTest {
 		player3[1].currentposX =4;
 		player3[1].currentposY =5; 
 
-		player3[2].currentposX = 6;
-		player3[2].currentposY = 7;
+		player3[2].startposX = 6;
+		player3[2].startposY = 7;
 
 		player3[3].currentposX = 6;
 		player3[3].currentposY = 9;
@@ -383,7 +383,6 @@ public class GameTest {
 		arrayTiles2 = map.returnArray();
 
 		game.visited = new boolean[4][game.mapSide*game.mapSide];
-
 		game.addUncovered(arrayTiles2, player3, 4);
 
 		assertEquals(1 ,player[1].getTeam());
