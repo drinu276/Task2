@@ -159,26 +159,26 @@ public class GameTest {
 	@Test
 	public void testGameType(){
 		
-		assertEquals(false, game.gameType('L')); //LETTER does not exist
-		assertEquals(true, game.gameType('Y'));
-		assertEquals(true, game.gameType('N'));
-		assertEquals(true, game.gameType('n'));
-		assertEquals(true, game.gameType('y'));
+		assertEquals(-1, game.gameType('L')); //LETTER does not exist
+		assertEquals(1, game.gameType('Y'));
+		assertEquals(0, game.gameType('N'));
+		assertEquals(0, game.gameType('n'));
+		assertEquals(1, game.gameType('y'));
 		
 		int playerNum=2;
-		Player[] player3;
-		player3 = new Player [playerNum];
+		Player[] player4;
+		player4 = new Player [playerNum];
 		game.gameType('N');
 		
-		if(game.gameType('N')|| game.gameType('n')){
+		if(game.gameType('N') == 0|| game.gameType('n') ==0){
 			for(int i=0; i<playerNum; i++){
-				player3[i]= new Player();
-				player3[i].setTeam(i);
+				player4[i]= new Player();
+				player4[i].setTeam(i);
 			}
-			assertEquals(0, player3[0].getTeam());
-			assertEquals(1, player3[1].getTeam());
-			assertNotEquals(1, player3[0].getTeam());
 		}
+		assertEquals(0, player4[0].getTeam());
+		assertEquals(1, player4[1].getTeam());
+		assertNotEquals(1, player4[0].getTeam());
 	}
 	
 	@Test	

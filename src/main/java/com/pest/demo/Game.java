@@ -109,18 +109,20 @@ public class Game {
 			System.out.println();
 		}
 
-		while (gameType(gamesType) == false) {
+		while (gameType(gamesType) == -1) {
 			System.out.println("Would you like to play in collaborative mode (Team Mode)? (Y/y or N/n)");
 			gamesType = sc.next().charAt(0);
 			System.out.println();
 		}
 		
+		if(gameType(gamesType)==1){
 			System.out.println("How many teams will be playing? (There can not be more players than teams)");
 			teamsNumber = sc.nextInt();
 			System.out.println();
 			if (checkNumberOfTeams(teamsNumber, playersNum)) {
 				setUpTeams(teamsNumber, playersNum);
 			}
+		}
 		return 0;
 	}
 
@@ -137,18 +139,18 @@ public class Game {
 		}
 	}
 
-	public boolean gameType(char gameType) {
+	public int gameType(char gameType) {
 		//boolean done = false;
 		if (gameType == 'N' || gameType == 'n') {
 			for (int i = 0; i < playersNum; i++) {
 				arrayPlayers[i] = new Player();
 				arrayPlayers[i].setTeam(i);
 			}
-			return true;
+			return 0;
 		} else if (gameType == 'Y' || gameType == 'y') {
-			return true;
+			return 1;
 		} else {
-			return false;
+			return -1;
 		}
 	}
 
