@@ -287,9 +287,10 @@ public class GameTest {
 	}
 
 	public void testcreateTilesArray(){
-		MapGeneratorCreator map2 = new MapGeneratorCreator();
+		/*MapGeneratorCreator map2 = new MapGeneratorCreator();
 		MapGenerator a = map2.createMap(game.mapSide, game.mapsType);
-		a.returnArray();
+		a.returnArray();*/
+		Tile [] arrayTiles;
 		game.createTilesArray();
 		assertEquals(0, game.createTilesArray());
 		assertNotNull(game.createTilesArray());
