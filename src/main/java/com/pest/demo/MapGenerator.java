@@ -24,4 +24,5 @@ public abstract class MapGenerator {
     }
 
     public abstract void generateLoop();
+
 }

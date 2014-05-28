@@ -20,7 +20,7 @@ public class Game {
 	char[] playerMoves; //Array that stores player
 	public boolean[][] visited;
 	Tile[][] arrayTiles; //Multidimensional array that stores arrays of type Tile, one for each player
-	Tile[] arrayTiles2;
+	public Tile[] arrayTiles2;
 	public Player[] arrayPlayers; //Array of type player that stores current and starting position of each player
 	Random rand = new Random();
 	char gamesType;
@@ -141,6 +141,7 @@ public class Game {
 
 	public int gameType(char gameType) {
 		//boolean done = false;
+		
 		if (gameType == 'N' || gameType == 'n') {
 			for (int i = 0; i < playersNum; i++) {
 				arrayPlayers[i] = new Player();
@@ -245,7 +246,7 @@ public class Game {
 				if (f < 0) {
 					f = 0;
 				} else if (f > (length)) {
-					f = (length);
+					f = (length-1);
 				}
 				if (arrayTiles2[f].tileType == 0) {
 					playersStartPosition[counter][0] = arrayTiles2[f].tileX;
